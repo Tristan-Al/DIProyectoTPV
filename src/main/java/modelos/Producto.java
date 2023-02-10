@@ -9,7 +9,7 @@ package modelos;
  * @author F
  */
 public class Producto {
-    private int id;
+    private int id_producto;
     private String nombre;
     private double precio;
     private int stock;
