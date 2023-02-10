@@ -44,7 +44,7 @@ public class GestionBD {
     /**
      * Metodo de desconexion con la BD.
      *
-     * @return Si ha conseguido o no la deconexion
+     * @return Si ha conseguido o no la desconexion
      */
     private boolean desconectar() {
         boolean salida = false;
