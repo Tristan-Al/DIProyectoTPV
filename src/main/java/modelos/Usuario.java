@@ -16,7 +16,7 @@ public class Usuario {
     private String nombre;
     private String apellidos;
     private String password;
-    private String rol;
+    private int rol;
 
     /**
      * Como predeterminado los unicos que pueden ser nulos es el nombre y el
@@ -28,10 +28,10 @@ public class Usuario {
         this.nombre = null;
         this.apellidos = null;
         this.password = "";
-        this.rol = "";
+        this.rol = 1;
     }
     
-    public Usuario(String nickname, String nombre, String apellidos, String password, String rol) {
+    public Usuario(String nickname, String nombre, String apellidos, String password, int rol) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -71,11 +71,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getRol() {
+    public int getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(int rol) {
         this.rol = rol;
     }
 

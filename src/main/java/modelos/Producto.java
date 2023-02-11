@@ -32,6 +32,13 @@ public class Producto {
         this.stock = stock;
         this.imagen = imagen;
     }
+    
+    public Producto(String nombre, double precio, int stock, String imagen) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.stock = stock;
+        this.imagen = imagen;
+    }
 
     public int getId_producto() {
         return id_producto;
@@ -115,7 +122,4 @@ public class Producto {
     public String toString() {
         return "Producto{" + "id_producto=" + id_producto + ", nombre=" + nombre + ", precio=" + precio + ", stock=" + stock + ", imagen=" + imagen + '}';
     }
-    
-    
-    
 }

@@ -14,20 +14,22 @@ import java.util.Objects;
  */
 public class Venta {
     private int id;
-    private String nickname_usuario;
+    private Usuario usuario;
     private LocalDateTime fecha_venta;
-    //private ArrayList<Producto> productos; Productos habiamos dicho que no se metia en ventas 
+    private ArrayList<Producto> productos;
 
     public Venta() {
         this.id = -1;
-        this.nickname_usuario = "";
+        this.usuario = new Usuario();
         this.fecha_venta = null;
+        this.productos = new ArrayList();
     }
     
-    public Venta(int id, String nickname_usuario, LocalDateTime fecha_venta) {
+    public Venta(int id, Usuario usuario, LocalDateTime fecha_venta, ArrayList<Producto> productos) {
         this.id = id;
-        this.nickname_usuario = nickname_usuario;
+        this.usuario = usuario;
         this.fecha_venta = fecha_venta;
+        this.productos = productos;
     }
 
     public int getId() {
@@ -38,28 +40,37 @@ public class Venta {
         this.id = id;
     }
 
-    public String getNickname_usuario() {
-        return nickname_usuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setNickname_usuario(String nickname_usuario) {
-        this.nickname_usuario = nickname_usuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public LocalDateTime getFecha_venta() {
         return fecha_venta;
     }
-
+    
     public void setFecha_venta(LocalDateTime fecha_venta) {
         this.fecha_venta = fecha_venta;
     }
 
+    public ArrayList<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(ArrayList<Producto> productos) {
+        this.productos = productos;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 37 * hash + this.id;
-        hash = 37 * hash + Objects.hashCode(this.nickname_usuario);
-        hash = 37 * hash + Objects.hashCode(this.fecha_venta);
+        int hash = 7;
+        hash = 17 * hash + this.id;
+        hash = 17 * hash + Objects.hashCode(this.usuario);
+        hash = 17 * hash + Objects.hashCode(this.fecha_venta);
+        hash = 17 * hash + Objects.hashCode(this.productos);
         return hash;
     }
 
@@ -78,14 +89,17 @@ public class Venta {
         if (this.id != other.id) {
             return false;
         }
-        if (!Objects.equals(this.nickname_usuario, other.nickname_usuario)) {
+        if (!Objects.equals(this.usuario, other.usuario)) {
             return false;
         }
-        return Objects.equals(this.fecha_venta, other.fecha_venta);
+        if (!Objects.equals(this.fecha_venta, other.fecha_venta)) {
+            return false;
+        }
+        return Objects.equals(this.productos, other.productos);
     }
 
     @Override
     public String toString() {
-        return "Venta{" + "id=" + id + ", nickname_usuario=" + nickname_usuario + ", fecha_venta=" + fecha_venta + '}';
+        return "Venta{" + "id=" + id + ", usuario=" + usuario + ", fecha_venta=" + fecha_venta + ", productos=" + productos + '}';
     }
 }
