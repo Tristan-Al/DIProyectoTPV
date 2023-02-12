@@ -120,6 +120,12 @@ public class Producto {
 
     @Override
     public String toString() {
-        return "Producto{" + "id_producto=" + id_producto + ", nombre=" + nombre + ", precio=" + precio + ", stock=" + stock + ", imagen=" + imagen + '}';
+        return "Producto{" 
+                + "\n \t id_producto=" + id_producto 
+                + "\n \t nombre=" + nombre 
+                + "\n \t precio=" + precio 
+                + "\n \t stock=" + stock 
+                + "\n \t imagen=" + imagen 
+                + "} \n";
     }
 }

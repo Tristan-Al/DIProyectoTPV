@@ -31,9 +31,8 @@ USE `gestortpv`;
 
 CREATE TABLE `detalle_venta` (
   `id_venta` int(11) NOT NULL,
-  `id_producto` int(11) NOT NULL,
-  `num_linea` int(11) NOT NULL,
-  `cantidad` int(11) DEFAULT NULL
+  `id_producto` int(11) DEFAULT NULL,
+  `num_linea` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -131,8 +130,8 @@ ALTER TABLE `ventas`
 -- Filtros para la tabla `detalle_venta`
 --
 ALTER TABLE `detalle_venta`
-  ADD CONSTRAINT `detalle_venta_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `ventas` (`id_venta`),
-  ADD CONSTRAINT `detalle_venta_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`);
+  ADD CONSTRAINT `detalle_venta_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `ventas` (`id_venta`) ON DELETE CASCADE,
+  ADD CONSTRAINT `detalle_venta_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`) ON DELETE SET NULL;
 
 --
 -- Filtros para la tabla `ventas`

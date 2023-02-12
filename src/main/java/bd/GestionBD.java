@@ -12,6 +12,7 @@ import modelos.Productos;
 import modelos.Usuario;
 import modelos.Usuarios;
 import modelos.Venta;
+import modelos.Ventas;
 
 public class GestionBD {
 
@@ -65,11 +66,10 @@ public class GestionBD {
         }
         return salida;
     }
-    
+
 //PRODUCTOS············································································
-    
     //INSERTAR PRODUCTO
-    public boolean insertarProducto(Producto producto){
+    public boolean insertarProducto(Producto producto) {
         boolean resultado = true;
         try {
             //Nos conectamos a la BD
@@ -91,18 +91,18 @@ public class GestionBD {
             stmt.close();
             //Desconectar
             desconectar();
-            
+
             return resultado;
         } catch (SQLException ex) {
             System.out.println("Error al insertar el producto" + producto.getNombre() + ". " + ex.getMessage());
             resultado = false;
         }
-        
+
         return resultado;
     }
-    
+
     //LISTAR PRODUCTOS
-    public Productos listarProductos(){
+    public Productos listarProductos() {
         Productos listado = new Productos();
         try {
             //Nos conectamos a la BD
@@ -116,7 +116,7 @@ public class GestionBD {
             System.out.println("Consulta SQL: " + sentencia);
             //Ejecutamos la consulta
             ResultSet rs = stmt.executeQuery(sentencia);
-            while(rs.next()){
+            while (rs.next()) {
                 listado.addProducto(new Producto(
                         rs.getInt("id_producto"),
                         rs.getString("nombre"),
@@ -134,12 +134,12 @@ public class GestionBD {
         } catch (SQLException ex) {
             System.out.println("Error al listar los productos. " + ex.getMessage());
         }
-        
+
         return listado;
     }
-    
+
     //MODIFICAR PRODUCTOS
-    public boolean modificarProducto(Producto productoAnterior, Producto productoPosterior){
+    public boolean modificarProducto(Producto productoAnterior, Producto productoPosterior) {
         boolean resultado = true;
         try {
             //Nos conectamos a la BD
@@ -163,7 +163,7 @@ public class GestionBD {
             stmt.close();
             //Desconectar
             desconectar();
-            
+
             return resultado;
         } catch (SQLException ex) {
             System.out.println("Error al modificar el producto" + productoAnterior.getNombre() + ". " + ex.getMessage());
@@ -171,9 +171,9 @@ public class GestionBD {
         }
         return resultado;
     }
-    
+
     //BORRAR PRODUCTOS
-    public boolean borrarProducto(Producto producto){
+    public boolean borrarProducto(Producto producto) {
         boolean resultado = true;
         try {
             //Nos conectamos a la BD
@@ -192,18 +192,18 @@ public class GestionBD {
             stmt.close();
             //Desconectar
             desconectar();
-            
+
             return resultado;
         } catch (SQLException ex) {
             System.out.println("Error al borrar el producto" + producto.getNombre() + ". " + ex.getMessage());
             resultado = false;
         }
-        
+
         return resultado;
     }
-    
+
     //BUSCAR PRODUCTO
-    public Producto buscarProductoNom(String nombreProducto){
+    public Producto buscarProductoNom(String nombreProducto) {
         Producto producto_buscado = null;
         try {
             //Nos conectamos a la BD
@@ -218,7 +218,7 @@ public class GestionBD {
             System.out.println("Consulta SQL: " + sentencia);
             //Ejecutamos la consulta
             ResultSet rs = stmt.executeQuery(sentencia);
-            while(rs.next()){
+            while (rs.next()) {
                 producto_buscado = new Producto(
                         rs.getInt("id_producto"),
                         rs.getString("nombre"),
@@ -236,14 +236,50 @@ public class GestionBD {
         } catch (SQLException ex) {
             System.out.println("Error al buscar el producto" + nombreProducto + ". " + ex.getMessage());
         }
-        
+
         return producto_buscado;
     }
-    
+
+    public Producto buscarProductoId(int id_producto) {
+        Producto producto_buscado = null;
+        try {
+            //Nos conectamos a la BD
+            conectar();
+            //Creamos la sentencia
+            Statement stmt = conexion.createStatement();
+            //Preparamos la sentencia SQL
+            String sentencia = String.format(
+                    "SELECT * FROM `productos` WHERE id_producto='%s'",
+                    id_producto);
+            //Mostramos la consulta por consola
+            System.out.println("Consulta SQL: " + sentencia);
+            //Ejecutamos la consulta
+            ResultSet rs = stmt.executeQuery(sentencia);
+            while (rs.next()) {
+                producto_buscado = new Producto(
+                        rs.getInt("id_producto"),
+                        rs.getString("nombre"),
+                        rs.getDouble("precio"),
+                        rs.getInt("stock"),
+                        rs.getString("imagen")
+                );
+            }
+            //Cierro el resultSet
+            rs.close();
+            //Cerrar la sentencia
+            stmt.close();
+            //Desconectar
+            desconectar();
+        } catch (SQLException ex) {
+            System.out.println("Error al buscar el producto " + id_producto + ". " + ex.getMessage());
+        }
+
+        return producto_buscado;
+    }
+
 //USUARIOS··············································································
-    
     //INSERTAR USUARIO
-    public boolean insertarUsuario(Usuario usuario){
+    public boolean insertarUsuario(Usuario usuario) {
         boolean resultado = true;
         try {
             //Nos conectamos a la BD
@@ -266,18 +302,18 @@ public class GestionBD {
             stmt.close();
             //Desconectar
             desconectar();
-            
+
             return resultado;
         } catch (SQLException ex) {
             System.out.println("Error al insertar el usuario" + usuario.getNombre() + ". " + ex.getMessage());
             resultado = false;
         }
-        
+
         return resultado;
     }
-    
+
     //LISTAR USUARIO
-    public Usuarios listarUsuarios(){
+    public Usuarios listarUsuarios() {
         Usuarios listado = new Usuarios();
         try {
             //Nos conectamos a la BD
@@ -291,7 +327,7 @@ public class GestionBD {
             System.out.println("Consulta SQL: " + sentencia);
             //Ejecutamos la consulta
             ResultSet rs = stmt.executeQuery(sentencia);
-            while(rs.next()){
+            while (rs.next()) {
                 listado.addUsuario(new Usuario(
                         rs.getString("nickname"),
                         rs.getString("nombre"),
@@ -309,12 +345,12 @@ public class GestionBD {
         } catch (SQLException ex) {
             System.out.println("Error al listar los usuarios. " + ex.getMessage());
         }
-        
+
         return listado;
     }
-    
+
     //MODIFICAR USUARIO
-    public boolean modificarUsuario(Usuario usuarioAnterior, Usuario usuarioPosterior){
+    public boolean modificarUsuario(Usuario usuarioAnterior, Usuario usuarioPosterior) {
         boolean resultado = true;
         try {
             //Nos conectamos a la BD
@@ -339,7 +375,7 @@ public class GestionBD {
             stmt.close();
             //Desconectar
             desconectar();
-            
+
             return resultado;
         } catch (SQLException ex) {
             System.out.println("Error al modificar el usuario" + usuarioAnterior.getNombre() + usuarioAnterior.getApellidos() + ". " + ex.getMessage());
@@ -347,9 +383,9 @@ public class GestionBD {
         }
         return resultado;
     }
-    
+
     //BORRAR USUARIO
-    public boolean borrarUsuario(Usuario usuario){
+    public boolean borrarUsuario(Usuario usuario) {
         boolean resultado = true;
         try {
             //Nos conectamos a la BD
@@ -368,18 +404,18 @@ public class GestionBD {
             stmt.close();
             //Desconectar
             desconectar();
-            
+
             return resultado;
         } catch (SQLException ex) {
             System.out.println("Error al borrar el usuario" + usuario.getNickname() + ". " + ex.getMessage());
             resultado = false;
         }
-        
+
         return resultado;
     }
-    
+
     //BUSCAR USUARIO
-    public Usuario buscarUsuarioNick(String nicknameUsuario){
+    public Usuario buscarUsuarioNick(String nicknameUsuario) {
         Usuario usuario_buscado = null;
         try {
             //Nos conectamos a la BD
@@ -394,7 +430,7 @@ public class GestionBD {
             System.out.println("Consulta SQL: " + sentencia);
             //Ejecutamos la consulta
             ResultSet rs = stmt.executeQuery(sentencia);
-            while(rs.next()){
+            while (rs.next()) {
                 usuario_buscado = new Usuario(
                         rs.getString("nickname"),
                         rs.getString("nombre"),
@@ -412,14 +448,13 @@ public class GestionBD {
         } catch (SQLException ex) {
             System.out.println("Error al buscar el usuario" + nicknameUsuario + ". " + ex.getMessage());
         }
-        
+
         return usuario_buscado;
     }
-    
+
 //VENTAS················································································
-    
     //INSERTAR VENTA
-    public boolean insertarVenta(Venta venta){
+    public boolean insertarVenta(Venta venta) {
         boolean resultado = true;
         try {
             //Nos conectamos a la BD
@@ -432,7 +467,7 @@ public class GestionBD {
                     + "(`nickname_usuario`, `fecha_venta`, `num_mesa`)"
                     + " VALUES ('%s',NOW(),%s)",
                     venta.getUsuario().getNickname(),
-                     venta.getNum_mesa());
+                    venta.getNum_mesa());
             //Mostramos la consulta por consola
             System.out.println("Consulta SQL: " + sentencia);
             //Ejecutamos la consulta
@@ -454,7 +489,7 @@ public class GestionBD {
                 );
                 numLinea++;
                 resultado = stmt.execute(sentencia);
-                
+
             }
             //Cerrar la sentencia
             stmt.close();
@@ -469,14 +504,158 @@ public class GestionBD {
 
         return resultado;
     }
+
     //LISTAR VENTAS
-    
+    public Ventas listarVentas() {
+        Ventas listado = new Ventas();
+        try {
+            //Nos conectamos a la BD
+            conectar();
+            //Creamos la sentencia
+            Statement stmt = conexion.createStatement();
+            //Preparamos la sentencia SQL
+            String sentencia = String.format(
+                    "SELECT * FROM `ventas` INNER JOIN `usuarios` ON usuarios.nickname = ventas.nickname_usuario");
+            //Mostramos la consulta por consola
+            System.out.println("Consulta SQL: " + sentencia);
+            //Ejecutamos la consulta
+            ResultSet rs = stmt.executeQuery(sentencia);
+            //Annadimos la venta a la lista
+            while (rs.next()) {
+                listado.addVenta(getVenta(rs));
+            }
+            //Cierro el resultSet
+            rs.close();
+            //Cerrar la sentencia
+            stmt.close();
+            //Desconectar
+            desconectar();
+        } catch (SQLException ex) {
+            System.out.println("Error al listar los productos. " + ex.getMessage());
+        }
+
+        return listado;
+
+    }
     //MODIFICAR VENTA
-    
+
+    public boolean modificarVenta(Venta ventaAnterior, Venta ventaPosterior) {
+        boolean resultado = true;
+        try {
+            //Nos conectamos a la BD
+            conectar();
+            //Creamos la sentencia
+            Statement stmt = conexion.createStatement();
+            //Preparamos la sentencia SQL
+            String sentencia = String.format(
+                    "UPDATE `ventas` "
+                    + "SET `nickname_usuario` = '%s',`fecha_venta`='%s',`num_mesa`=%s "
+                    + "WHERE `id_venta` = %s",
+                    ventaPosterior.getUsuario().getNickname(),
+                    ventaPosterior.getFecha_venta(),
+                    ventaPosterior.getNum_mesa(),
+                    ventaAnterior.getId()
+            );
+            //Mostramos la consulta por consola
+            System.out.println("Consulta SQL: " + sentencia);
+            //Ejecutamos la consulta
+            resultado = stmt.execute(sentencia);
+
+            //BORRAR TODOS LOS PRODUCTOS DE LA VENTA ANTERIOR
+            borraDetalleVenta(ventaAnterior.getId());
+
+            //METER LOS PRODUCTOS DE LA VENTA POSTERIOR
+            //Por cada producto insertamos una nueva linea en la tabla detalle ventas
+            int numLinea = 0;
+            for (Producto producto : ventaPosterior.getProductos()) {
+                sentencia = String.format(
+                        "INSERT INTO `detalle_venta`"
+                        + "(`id_venta`, `id_producto`, `num_linea`)"
+                        + " VALUES ('%s','%s','%s')",
+                        ventaAnterior.getId(),
+                        producto.getId_producto(),
+                        numLinea
+                );
+                numLinea++;
+                resultado = stmt.execute(sentencia);
+            }
+
+            //Cerrar la sentencia
+            stmt.close();
+            //Desconectar
+            desconectar();
+
+            return resultado;
+        } catch (SQLException ex) {
+            System.out.println("Error al modificar la venta" + ventaAnterior + ". " + ex.getMessage());
+            resultado = false;
+        }
+        return resultado;
+    }
+
     //BORRAR VENTA
-    
+    public boolean borrarVentaId(int id_venta) {
+        boolean resultado = true;
+        try {
+            //Nos conectamos a la BD
+            conectar();
+            //Creamos la sentencia
+            Statement stmt = conexion.createStatement();
+            //Preparamos la sentencia SQL
+            String sentencia = String.format(
+                    "DELETE FROM `ventas` WHERE `id_venta` = %s",
+                    id_venta);
+            //Mostramos la consulta por consola
+            System.out.println("Consulta SQL: " + sentencia);
+            //Ejecutamos la consulta
+            resultado = stmt.execute(sentencia);
+            //Cerrar la sentencia
+            stmt.close();
+            //Desconectar
+            desconectar();
+
+            return resultado;
+        } catch (SQLException ex) {
+            System.out.println("Error al borrar la venta " + id_venta + ". " + ex.getMessage());
+            resultado = false;
+        }
+        return resultado;
+    }
+
+    public boolean borrarVenta(Venta venta) {
+        boolean resultado = true;
+        try {
+            //Nos conectamos a la BD
+            conectar();
+            //Creamos la sentencia
+            Statement stmt = conexion.createStatement();
+            //Preparamos la sentencia SQL
+            String sentencia = String.format(
+                    "DELETE FROM `ventas` "
+                    + "WHERE `nickname_usuario` = %s "
+                    + "AND `fecha_venta` = %s "
+                    + "AND `num_mesa` = %s",
+                    venta.getUsuario().getNickname(),
+                    venta.getFecha_venta(),
+                    venta.getNum_mesa());
+            //Mostramos la consulta por consola
+            System.out.println("Consulta SQL: " + sentencia);
+            //Ejecutamos la consulta
+            resultado = stmt.execute(sentencia);
+            //Cerrar la sentencia
+            stmt.close();
+            //Desconectar
+            desconectar();
+            return resultado;
+        } catch (SQLException ex) {
+            System.out.println("Error al borrar la venta " + venta + ". " + ex.getMessage());
+            resultado = false;
+        }
+        return resultado;
+    }
+
     //BUSCAR VENTA
-    public Venta buscarVenta(Venta venta){
+    public Venta buscarVenta(Venta venta) {
         Venta venta_buscada = null;
         try {
             //Nos conectamos a la BD
@@ -486,10 +665,10 @@ public class GestionBD {
             //Preparamos la sentencia SQL
             String sentencia = String.format(
                     "SELECT * FROM `ventas` "
-                            + "INNER JOIN `usuarios` ON usuarios.nickname = ventas.nickname_usuario "
-                            + "WHERE `nickname_usuario` = '%s' "
-                            + "AND `num_mesa` = '%s' "
-                            + "AND `fecha_venta` = (SELECT MAX(fecha_venta) from ventas WHERE `nickname_usuario` = '%s' AND `num_mesa` = %s) ",
+                    + "INNER JOIN `usuarios` ON usuarios.nickname = ventas.nickname_usuario "
+                    + "WHERE `nickname_usuario` = '%s' "
+                    + "AND `num_mesa` = '%s' "
+                    + "AND `fecha_venta` = (SELECT MAX(fecha_venta) from ventas WHERE `nickname_usuario` = '%s' AND `num_mesa` = %s) ",
                     venta.getUsuario().getNickname(),
                     venta.getNum_mesa(),
                     venta.getUsuario().getNickname(),
@@ -498,75 +677,113 @@ public class GestionBD {
             System.out.println("Consulta SQL: " + sentencia);
             //Ejecutamos la consulta
             ResultSet rs = stmt.executeQuery(sentencia);
-            while(rs.next()){
-                venta_buscada = new Venta(
-                        rs.getInt("id_venta"), 
-                        rs.getInt("num_mesa"), 
-                        new Usuario(
-                                rs.getString("nickname_usuario"), 
-                                rs.getString("nombre"), 
-                                rs.getString("apellidos"), 
-                                rs.getString("user_pass"), 
-                                rs.getInt("rol")), 
-                        LocalDateTime.parse(rs.getString("fecha_venta").replaceAll(" ", "T")), 
-                        null
-                );
-                
-                
+            while (rs.next()) {
+                venta_buscada = getVenta(rs);
+
             }
             //Cierro el resultSet
             rs.close();
             //Cerrar la sentencia
             stmt.close();
-            
-            if (venta_buscada != null) {
-                //Creamos una sentencia nueva
-                stmt = conexion.createStatement();
-                //Preparamos la sentencia SQL
-                sentencia = String.format(
-                        "SELECT * FROM `detalle_venta` "
-                                + "INNER JOIN productos ON "
-                                + "detalle_venta.id_producto = productos.id_producto "
-                                + "WHERE `id_venta` = %s",
-                        venta_buscada.getId());
-                //Mostramos la consulta por consola
-                System.out.println("Consulta SQL: " + sentencia);
-                //Ejecutamos la consulta
-                rs = stmt.executeQuery(sentencia);
-                ArrayList<Producto> productos = new ArrayList();
-                while(rs.next()){
-                    productos.add(
-                            new Producto(rs.getInt("id_producto"),
-                                    rs.getString("nombre"), 
-                                    rs.getDouble("precio"), 
-                                    rs.getInt("stock"), 
-                                    rs.getString("imagen"))
-                    );
-                }
-                venta_buscada.setProductos(productos);
-                //Cierro el resultSet
-                rs.close();
-                //Cerrar la sentencia
-                stmt.close();
-            }            
             //Desconectar
             desconectar();
         } catch (SQLException ex) {
             System.out.println("Error al buscar la venta " + venta.toString() + ex.getMessage());
         }
-        
+
         return venta_buscada;
     }
-    
-    //METODOS················································································
 
-    
+    //METODOS················································································
+    /**
+     * Metodo privado para obtener una Venta con todos sus productos a partir de
+     * un ResultSet
+     */
+    private Venta getVenta(ResultSet rs) throws SQLException {
+        Venta venta = new Venta(
+                rs.getInt("id_venta"),
+                rs.getInt("num_mesa"),
+                new Usuario(
+                        rs.getString("nickname_usuario"),
+                        rs.getString("nombre"),
+                        rs.getString("apellidos"),
+                        rs.getString("user_pass"),
+                        rs.getInt("rol")),
+                LocalDateTime.parse(rs.getString("fecha_venta").replaceAll(" ", "T")),
+                new ArrayList()
+        );
+
+        //Creamos una sentencia nueva
+        Statement stmt = conexion.createStatement();
+        //Preparamos la sentencia SQL para coger todos los productos de la venta
+        String sentencia = String.format(
+                "SELECT * FROM `detalle_venta` "
+                + "INNER JOIN productos ON "
+                + "detalle_venta.id_producto = productos.id_producto "
+                + "WHERE `id_venta` = %s",
+                venta.getId());
+        //Mostramos la consulta por consola
+        System.out.println("Consulta SQL: " + sentencia);
+        //Ejecutamos la consulta
+        rs = stmt.executeQuery(sentencia);
+        // Mientras que haya productos los anade al arrayList de productos de
+        // la venta
+        while (rs.next()) {
+            venta.addProducto(
+                    new Producto(rs.getInt("id_producto"),
+                            rs.getString("nombre"),
+                            rs.getDouble("precio"),
+                            rs.getInt("stock"),
+                            rs.getString("imagen")));
+        }
+        //Cierro el resultSet
+        rs.close();
+        //Cerrar la sentencia
+        stmt.close();
+
+        return venta;
+    }
+
+    /**
+     * Borra todos los productos de la venta en la tabla detalle_venta
+     *
+     * @return Si lo ha conseguido borrar o no
+     */
+    private boolean borraDetalleVenta(int id_venta) {
+        boolean resultado = true;
+        try {
+            //Nos conectamos a la BD
+            conectar();
+            //Creamos la sentencia
+            Statement stmt = conexion.createStatement();
+            //Preparamos la sentencia SQL
+            String sentencia = String.format(
+                    "DELETE FROM `detalle_venta` WHERE `id_venta` = %s",
+                    id_venta);
+            //Mostramos la consulta por consola
+            System.out.println("Consulta SQL: " + sentencia);
+            //Ejecutamos la consulta
+            resultado = stmt.execute(sentencia);
+            //Cerrar la sentencia
+            stmt.close();
+            //Desconectar
+            desconectar();
+            return resultado;
+        } catch (SQLException ex) {
+            System.out.println("Error al borrar los detalled e  " + id_venta + ". " + ex.getMessage());
+            resultado = false;
+        }
+        return resultado;
+    }
+
     /**
      * Comprueba el stock de un producto en la BD
-     * @param producto 
-     * @return  Si hay stock o no
+     *
+     * @param producto
+     * @param cantidad
+     * @return Si hay stock o no
      */
-    public boolean compruebaStock(Producto producto){
+    public boolean compruebaStock(Producto producto, int cantidad) {
         try {
             //Nos conectamos a la BD
             conectar();
@@ -580,8 +797,8 @@ public class GestionBD {
             System.out.println("Consulta SQL: " + sentencia);
             //Ejecutamos la consulta
             ResultSet rs = stmt.executeQuery(sentencia);
-            while(rs.next()){
-                return rs.getInt(1) >= 1;
+            while (rs.next()) {
+                return rs.getInt(1) >= cantidad;
             }
             //Cierro el resultSet
             rs.close();
@@ -592,7 +809,56 @@ public class GestionBD {
         } catch (SQLException ex) {
             System.out.println("Error al encontrar el producto. " + producto.getNombre() + ". " + ex.getMessage());
         }
-        
+
         return false;
     }
+
+    /**
+     * Comprueba si hay stock suficiente y en caso de que hubiera
+     * resta la cantidad al stock actual del producto
+     * @param producto
+     * @param cantidad
+     * @return 
+     */
+    public boolean actualizaStock(Producto producto, int cantidad) {
+        boolean resultado = false;
+        Producto producto_buscado = null;
+
+        //Buscamos el producto en la BD
+        producto_buscado = buscarProductoId(producto.getId_producto());
+        
+        //Cogemos el stock actual
+        int stockActual = producto_buscado.getStock();
+        
+        //Comprobamos que hay stock suficiente
+        if (compruebaStock(producto_buscado, cantidad)) {
+            
+            //Actualizamos el stock restando la cantidad indicada
+            producto_buscado.setStock(stockActual - cantidad);
+            
+            //Modificamos el producto con el stock cambiado en la BD
+            modificarProducto(producto, producto_buscado);
+            
+            resultado = true;
+            
+        } else {
+            System.out.println("No hay suficiente stock para el producto: "
+                    + producto.getNombre() + ", stock: " + producto.getStock());
+            resultado = false;
+        }
+
+        return resultado;
+    }
+    
+    /**
+     * Comprueba si el usuario pasado es administrador
+     * @param usuario
+     * @return true si es administrador o false si no
+     */
+    public boolean esAdmin(Usuario usuario){
+        Usuario usuario_buscado = buscarUsuarioNick(usuario.getNickname());
+        return usuario_buscado.getRol() == 0;
+    }
+    
+    
 }

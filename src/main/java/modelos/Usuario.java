@@ -81,7 +81,13 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" + "nickname=" + nickname + ", nombre=" + nombre + ", apellidos=" + apellidos + ", password=" + password + ", rol=" + rol + '}';
+        return "Usuario{" 
+                + "\n \t nickname=" + nickname 
+                + "\n \t nombre=" + nombre 
+                + "\n \t apellidos=" + apellidos 
+                + "\n \t password=" + password 
+                + "\n \t rol=" + rol 
+                + "}\n";
     }
 
     @Override

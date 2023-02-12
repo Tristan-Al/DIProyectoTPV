@@ -75,6 +75,9 @@ public class Venta {
         this.productos = productos;
     }
 
+    public void addProducto(Producto producto){
+        this.productos.add(producto);
+    }
     @Override
     public int hashCode() {
         int hash = 3;
@@ -115,11 +118,12 @@ public class Venta {
 
     @Override
     public String toString() {
-        return "Venta{" + "id=" + id 
-                + ", num_mesa=" + num_mesa 
-                + ", usuario=" + usuario 
-                + ", fecha_venta=" + fecha_venta 
-                + ", productos=" + productos 
+        return "Venta{ " 
+                + "\n \t id=" + id 
+                + "\n \t num_mesa=" + num_mesa 
+                + "\n \t usuario= \n" + usuario 
+                + "\n \t fecha_venta=" + fecha_venta 
+                + "\n \t productos= \n" + productos 
                 + '}';
     }
 }

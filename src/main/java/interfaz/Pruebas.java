@@ -2,11 +2,13 @@ package interfaz;
 
 import bd.GestionBD;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 import modelos.Producto;
 import modelos.Usuario;
 import modelos.Venta;
+import modelos.Ventas;
 
 public class Pruebas {
 
@@ -67,19 +69,39 @@ public class Pruebas {
 //        gestion.borrarProducto(producto2);
 //        gestion.borrarUsuario(usuario2);
 
-
         //VENTAS
-        
 //        ArrayList<Producto> productos = new ArrayList();
 //        producto.setId_producto(2);
 //        producto2.setId_producto(3);
+//
 //        productos.add(producto);
 //        productos.add(producto2);
 //        
-//        Venta ventaPrueba = new Venta(1, 1, usuario, LocalDateTime.of(2023, Month.FEBRUARY, 12, 12, 24, 07), productos);
-//        
-//        gestion.insertarVenta(ventaPrueba);
+//        Venta ventaPrueba = new Venta(12, 1, usuario, LocalDateTime.of(2023, 2, 12, 15, 54, 03), productos);
 
+//        gestion.insertarVenta(ventaPrueba);
+//        Ventas ventas = gestion.listarVentas();
+//        for (int i = 0; i < ventas.size(); i++) {
+//            System.out.println(ventas.getVenta(i));
+//        }
         //System.out.println(gestion.buscarVenta(ventaPrueba));;
+        Usuario usuarioModificado = new Usuario("talonso2", "Tristan", "Alonso", "talonso", 1);
+//        gestion.insertarUsuario(usuarioModificado);
+//        
+//        ArrayList<Producto> productos2 = new ArrayList();
+//        producto2.setId_producto(2);
+//        productos2.add(producto2);
+//
+//        Venta ventaModificada = new Venta(1, 3, usuarioModificado, LocalDateTime.of(2023, 1, 12, 15, 41, 52), productos2);
+//        
+//        gestion.modificarVenta(ventaPrueba, ventaModificada);
+        
+
+        //METODOS
+//        producto.setId_producto(2);
+//        System.out.println(gestion.compruebaStock(producto, 10));
+        
+//        System.out.println(gestion.esAdmin(usuario));
+        
     }
 }
