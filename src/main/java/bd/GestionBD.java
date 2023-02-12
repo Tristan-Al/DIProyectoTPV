@@ -332,7 +332,7 @@ public class GestionBD {
                         rs.getString("nickname"),
                         rs.getString("nombre"),
                         rs.getString("apellidos"),
-                        rs.getString("user_pass"),
+                        rs.getInt("user_pass"),
                         rs.getInt("rol")
                 ));
             }
@@ -435,7 +435,7 @@ public class GestionBD {
                         rs.getString("nickname"),
                         rs.getString("nombre"),
                         rs.getString("apellidos"),
-                        rs.getString("user_pass"),
+                        rs.getInt("user_pass"),
                         rs.getInt("rol")
                 );
             }
@@ -707,7 +707,7 @@ public class GestionBD {
                         rs.getString("nickname_usuario"),
                         rs.getString("nombre"),
                         rs.getString("apellidos"),
-                        rs.getString("user_pass"),
+                        rs.getInt("user_pass"),
                         rs.getInt("rol")),
                 LocalDateTime.parse(rs.getString("fecha_venta").replaceAll(" ", "T")),
                 new ArrayList()
@@ -858,6 +858,39 @@ public class GestionBD {
     public boolean esAdmin(Usuario usuario){
         Usuario usuario_buscado = buscarUsuarioNick(usuario.getNickname());
         return usuario_buscado.getRol() == 0;
+    }
+
+    /**
+     * Metodo para comprobar si el id y la contrasena del usuario
+     * son correctas 
+     * 
+     * @param nickname
+     * @param password
+     * @return Si son correctas o no
+     */
+    public boolean compruebaPassword(String nickname, int password) {
+        boolean salida = false;
+        ResultSet rs;
+        conectar();
+        try {
+            Statement sentencia = conexion.createStatement();
+            String sql = String.format("SELECT * FROM `usuarios` WHERE `nickname` = '%s' AND `user_pass` = %s",
+                    nickname,
+                    password
+            );
+            sentencia.execute(sql);
+            rs = sentencia.getResultSet();
+            while (rs.next()) {
+                salida = true;
+            }
+            rs.close();
+            sentencia.close();
+            conexion.close();
+
+        } catch (SQLException e) {
+            System.err.println("Error al devolver la lista: " + e.getMessage());
+        }
+        return salida;
     }
     
     

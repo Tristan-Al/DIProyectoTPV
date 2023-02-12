@@ -59,7 +59,7 @@ CREATE TABLE `usuarios` (
   `nickname` varchar(100) NOT NULL,
   `nombre` varchar(100) DEFAULT NULL,
   `apellidos` varchar(100) DEFAULT NULL,
-  `user_pass` varchar(100) NOT NULL,
+  `user_pass` int(4) NOT NULL,
   `rol` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

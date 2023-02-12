@@ -15,7 +15,7 @@ public class Usuario {
     private String nickname;
     private String nombre;
     private String apellidos;
-    private String password;
+    private int password;
     private int rol;
 
     /**
@@ -27,11 +27,11 @@ public class Usuario {
         this.nickname = "";
         this.nombre = null;
         this.apellidos = null;
-        this.password = "";
+        this.password = -1;
         this.rol = 1;
     }
     
-    public Usuario(String nickname, String nombre, String apellidos, String password, int rol) {
+    public Usuario(String nickname, String nombre, String apellidos, int password, int rol) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -63,11 +63,11 @@ public class Usuario {
         this.apellidos = apellidos;
     }
 
-    public String getPassword() {
+    public int getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(int password) {
         this.password = password;
     }
 
