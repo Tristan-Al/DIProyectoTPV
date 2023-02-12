@@ -74,7 +74,7 @@ CREATE TABLE `ventas` (
   `id_venta` int(11) NOT NULL,
   `nickname_usuario` varchar(100) NOT NULL,
   `fecha_venta` datetime DEFAULT NULL,
-  `num_mesas` int(11) NOT NULL
+  `num_mesa` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -104,7 +104,7 @@ ALTER TABLE `usuarios`
 -- Indices de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  ADD PRIMARY KEY (`id_venta`,`num_mesas`),
+  ADD PRIMARY KEY (`id_venta`,`num_mesa`),
   ADD KEY `nickname_usuario` (`nickname_usuario`);
 
 --

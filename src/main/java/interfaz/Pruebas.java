@@ -1,19 +1,26 @@
 package interfaz;
 
 import bd.GestionBD;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.ArrayList;
 import modelos.Producto;
 import modelos.Usuario;
+import modelos.Venta;
 
 public class Pruebas {
 
     public static void main(String[] args) {
-        GestionBD gestion = new GestionBD("localhost", "root", "", "gestortpv");
+//        GestionBD gestion = new GestionBD("localhost", "root", "", "gestortpv");
+        GestionBD gestion = new GestionBD("localhost", "root", "dam_21017245_sge", "gestortpv");
 
 //        //INSERTAR
-//        Producto producto = new Producto("Cerveza", 2.50, 50, "imgCerveza.png");
-//        Usuario usuario = new Usuario("rbarea", "raul", "barea", "123456", 0);
+        Producto producto = new Producto("Cerveza", 2.50, 50, "imgCerveza.png");
+        Producto producto2 = new Producto("Vino", 2.50, 50, "imgVino.png");
+        Usuario usuario = new Usuario("rbarea", "raul", "barea", "123456", 0);
 //
 //        gestion.insertarProducto(producto);
+//        gestion.insertarProducto(producto2);
 //        gestion.insertarUsuario(usuario);
 //
 //        //LISTAR
@@ -59,5 +66,20 @@ public class Pruebas {
 //
 //        gestion.borrarProducto(producto2);
 //        gestion.borrarUsuario(usuario2);
+
+
+        //VENTAS
+        
+//        ArrayList<Producto> productos = new ArrayList();
+//        producto.setId_producto(2);
+//        producto2.setId_producto(3);
+//        productos.add(producto);
+//        productos.add(producto2);
+//        
+//        Venta ventaPrueba = new Venta(1, 1, usuario, LocalDateTime.of(2023, Month.FEBRUARY, 12, 12, 24, 07), productos);
+//        
+//        gestion.insertarVenta(ventaPrueba);
+
+        //System.out.println(gestion.buscarVenta(ventaPrueba));;
     }
 }

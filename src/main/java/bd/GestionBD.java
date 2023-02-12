@@ -5,11 +5,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import modelos.Producto;
 import modelos.Productos;
 import modelos.Usuario;
 import modelos.Usuarios;
+import modelos.Venta;
 
 public class GestionBD {
 
@@ -416,30 +418,181 @@ public class GestionBD {
     
 //VENTAS················································································
     
-    //INSERTAR PRODUCTO
+    //INSERTAR VENTA
+    public boolean insertarVenta(Venta venta){
+        boolean resultado = true;
+        try {
+            //Nos conectamos a la BD
+            conectar();
+            //Creamos la sentencia
+            Statement stmt = conexion.createStatement();
+            //Preparamos la sentencia SQL
+            String sentencia = String.format(
+                    "INSERT INTO `ventas`"
+                    + "(`nickname_usuario`, `fecha_venta`, `num_mesa`)"
+                    + " VALUES ('%s',NOW(),%s)",
+                    venta.getUsuario().getNickname(),
+                     venta.getNum_mesa());
+            //Mostramos la consulta por consola
+            System.out.println("Consulta SQL: " + sentencia);
+            //Ejecutamos la consulta
+            resultado = stmt.execute(sentencia);
+
+            // Obtenemos la venta que acabamos de insertar
+            Venta ventaInsertada = buscarVenta(venta);
+
+            //Por cada producto insertamos una nueva linea en la tabla detalle ventas
+            int numLinea = 0;
+            for (Producto producto : venta.getProductos()) {
+                sentencia = String.format(
+                        "INSERT INTO `detalle_venta`"
+                        + "(`id_venta`, `id_producto`, `num_linea`)"
+                        + " VALUES ('%s','%s','%s')",
+                        ventaInsertada.getId(),
+                        producto.getId_producto(),
+                        numLinea
+                );
+                numLinea++;
+                resultado = stmt.execute(sentencia);
+                
+            }
+            //Cerrar la sentencia
+            stmt.close();
+            //Desconectar
+            desconectar();
+
+            return resultado;
+        } catch (SQLException ex) {
+            System.out.println("Error al insertar venta. " + ex.getMessage());
+            resultado = false;
+        }
+
+        return resultado;
+    }
+    //LISTAR VENTAS
     
-    //LISTAR PRODUCTOS
+    //MODIFICAR VENTA
     
-    //MODIFICAR PRODUCTOS
+    //BORRAR VENTA
     
-    //BORRAR PRODUCTOS
-    
-    //BUSCAR PRODUCTO
-    
-    
-    
-    
-    //Insertar Departamento
-    
-    
-    //Modificar Departamento
-    
-    //Borrar Departamento
-    
-    
-    //Listar Departamentos
-    
-    
-    //Buscar Departamentos
+    //BUSCAR VENTA
+    public Venta buscarVenta(Venta venta){
+        Venta venta_buscada = null;
+        try {
+            //Nos conectamos a la BD
+            conectar();
+            //Creamos la sentencia
+            Statement stmt = conexion.createStatement();
+            //Preparamos la sentencia SQL
+            String sentencia = String.format(
+                    "SELECT * FROM `ventas` "
+                            + "INNER JOIN `usuarios` ON usuarios.nickname = ventas.nickname_usuario "
+                            + "WHERE `nickname_usuario` = '%s' "
+                            + "AND `num_mesa` = '%s' "
+                            + "AND `fecha_venta` = (SELECT MAX(fecha_venta) from ventas WHERE `nickname_usuario` = '%s' AND `num_mesa` = %s) ",
+                    venta.getUsuario().getNickname(),
+                    venta.getNum_mesa(),
+                    venta.getUsuario().getNickname(),
+                    venta.getNum_mesa());
+            //Mostramos la consulta por consola
+            System.out.println("Consulta SQL: " + sentencia);
+            //Ejecutamos la consulta
+            ResultSet rs = stmt.executeQuery(sentencia);
+            while(rs.next()){
+                venta_buscada = new Venta(
+                        rs.getInt("id_venta"), 
+                        rs.getInt("num_mesa"), 
+                        new Usuario(
+                                rs.getString("nickname_usuario"), 
+                                rs.getString("nombre"), 
+                                rs.getString("apellidos"), 
+                                rs.getString("user_pass"), 
+                                rs.getInt("rol")), 
+                        LocalDateTime.parse(rs.getString("fecha_venta").replaceAll(" ", "T")), 
+                        null
+                );
+                
+                
+            }
+            //Cierro el resultSet
+            rs.close();
+            //Cerrar la sentencia
+            stmt.close();
+            
+            if (venta_buscada != null) {
+                //Creamos una sentencia nueva
+                stmt = conexion.createStatement();
+                //Preparamos la sentencia SQL
+                sentencia = String.format(
+                        "SELECT * FROM `detalle_venta` "
+                                + "INNER JOIN productos ON "
+                                + "detalle_venta.id_producto = productos.id_producto "
+                                + "WHERE `id_venta` = %s",
+                        venta_buscada.getId());
+                //Mostramos la consulta por consola
+                System.out.println("Consulta SQL: " + sentencia);
+                //Ejecutamos la consulta
+                rs = stmt.executeQuery(sentencia);
+                ArrayList<Producto> productos = new ArrayList();
+                while(rs.next()){
+                    productos.add(
+                            new Producto(rs.getInt("id_producto"),
+                                    rs.getString("nombre"), 
+                                    rs.getDouble("precio"), 
+                                    rs.getInt("stock"), 
+                                    rs.getString("imagen"))
+                    );
+                }
+                venta_buscada.setProductos(productos);
+                //Cierro el resultSet
+                rs.close();
+                //Cerrar la sentencia
+                stmt.close();
+            }            
+            //Desconectar
+            desconectar();
+        } catch (SQLException ex) {
+            System.out.println("Error al buscar la venta " + venta.toString() + ex.getMessage());
+        }
         
+        return venta_buscada;
+    }
+    
+    //METODOS················································································
+
+    
+    /**
+     * Comprueba el stock de un producto en la BD
+     * @param producto 
+     * @return  Si hay stock o no
+     */
+    public boolean compruebaStock(Producto producto){
+        try {
+            //Nos conectamos a la BD
+            conectar();
+            //Creamos la sentencia
+            Statement stmt = conexion.createStatement();
+            //Preparamos la sentencia SQL
+            String sentencia = String.format(
+                    "SELECT `stock` FROM `productos` WHERE `id_producto` = %s",
+                    producto.getId_producto());
+            //Mostramos la consulta por consola
+            System.out.println("Consulta SQL: " + sentencia);
+            //Ejecutamos la consulta
+            ResultSet rs = stmt.executeQuery(sentencia);
+            while(rs.next()){
+                return rs.getInt(1) >= 1;
+            }
+            //Cierro el resultSet
+            rs.close();
+            //Cerrar la sentencia
+            stmt.close();
+            //Desconectar
+            desconectar();
+        } catch (SQLException ex) {
+            System.out.println("Error al encontrar el producto. " + producto.getNombre() + ". " + ex.getMessage());
+        }
+        
+        return false;
+    }
 }

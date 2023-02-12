@@ -14,19 +14,22 @@ import java.util.Objects;
  */
 public class Venta {
     private int id;
+    private int num_mesa;
     private Usuario usuario;
     private LocalDateTime fecha_venta;
     private ArrayList<Producto> productos;
 
     public Venta() {
         this.id = -1;
+        this.num_mesa = -1;
         this.usuario = new Usuario();
         this.fecha_venta = null;
         this.productos = new ArrayList();
     }
     
-    public Venta(int id, Usuario usuario, LocalDateTime fecha_venta, ArrayList<Producto> productos) {
+    public Venta(int id,int num_mesa, Usuario usuario, LocalDateTime fecha_venta, ArrayList<Producto> productos) {
         this.id = id;
+        this.num_mesa = num_mesa;
         this.usuario = usuario;
         this.fecha_venta = fecha_venta;
         this.productos = productos;
@@ -38,6 +41,14 @@ public class Venta {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getNum_mesa() {
+        return num_mesa;
+    }
+
+    public void setNum_mesa(int num_mesa) {
+        this.num_mesa = num_mesa;
     }
 
     public Usuario getUsuario() {
@@ -66,8 +77,9 @@ public class Venta {
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 3;
         hash = 17 * hash + this.id;
+        hash = 17 * hash + this.num_mesa;
         hash = 17 * hash + Objects.hashCode(this.usuario);
         hash = 17 * hash + Objects.hashCode(this.fecha_venta);
         hash = 17 * hash + Objects.hashCode(this.productos);
@@ -84,9 +96,12 @@ public class Venta {
         }
         if (getClass() != obj.getClass()) {
             return false;
-        }
+        }    
         final Venta other = (Venta) obj;
         if (this.id != other.id) {
+            return false;
+        }
+        if (this.num_mesa != other.num_mesa) {
             return false;
         }
         if (!Objects.equals(this.usuario, other.usuario)) {
@@ -100,6 +115,11 @@ public class Venta {
 
     @Override
     public String toString() {
-        return "Venta{" + "id=" + id + ", usuario=" + usuario + ", fecha_venta=" + fecha_venta + ", productos=" + productos + '}';
+        return "Venta{" + "id=" + id 
+                + ", num_mesa=" + num_mesa 
+                + ", usuario=" + usuario 
+                + ", fecha_venta=" + fecha_venta 
+                + ", productos=" + productos 
+                + '}';
     }
 }
