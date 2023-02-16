@@ -49,7 +49,8 @@ public class Backend extends javax.swing.JFrame {
         this.listadoVentas = new Ventas();
         
         //Instanciamos la conexion
-        conexion = new GestionBD("localhost", "root", "", "empresa");
+        conexion = new GestionBD("localhost", "root", "", "gestortpv");
+        //conexion = new GestionBD("localhost", "root", "dam_21017245_sge", "gestortpv");
         listadoProductos = conexion.listarProductos();
         listadoUsuarios = conexion.listarUsuarios();
         listadoVentas = conexion.listarVentas();

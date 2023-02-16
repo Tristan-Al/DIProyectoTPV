@@ -4,6 +4,8 @@
  */
 package interfaz;
 
+import bd.GestionBD;
+
 /**
  *
  * @author rbare
@@ -13,7 +15,14 @@ public class tpvGUI extends javax.swing.JFrame {
     /**
      * Creates new form tpvGUI
      */
+    
+    GestionBD conexion;
+    
     public tpvGUI() {
+        
+        conexion = new GestionBD("localhost", "root", "", "gestortpv");
+        //conexion = new GestionBD("localhost", "root", "dam_21017245_sge", "gestortpv");
+        
         initComponents();
     }
 
