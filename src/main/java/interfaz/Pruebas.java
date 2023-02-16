@@ -19,7 +19,7 @@ public class Pruebas {
 //        //INSERTAR
         Producto producto = new Producto("Cerveza", 2.50, 50);
         Producto producto2 = new Producto("Vino", 2.50, 50);
-        Usuario usuario = new Usuario("rbarea", "raul", "barea", "123456", 0);
+        Usuario usuario = new Usuario("rbarea", "raul", "barea", 1234, 0);
 //
 //        gestion.insertarProducto(producto);
 //        gestion.insertarProducto(producto2);
@@ -85,7 +85,7 @@ public class Pruebas {
 //            System.out.println(ventas.getVenta(i));
 //        }
         //System.out.println(gestion.buscarVenta(ventaPrueba));;
-        Usuario usuarioModificado = new Usuario("talonso2", "Tristan", "Alonso", "talonso", 1);
+        Usuario usuarioModificado = new Usuario("talonso2", "Tristan", "Alonso", 1234, 1);
 //        gestion.insertarUsuario(usuarioModificado);
 //        
 //        ArrayList<Producto> productos2 = new ArrayList();
