@@ -11,7 +11,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import modelos.Producto;
 import modelos.Productos;
+import modelos.Usuario;
 import modelos.Usuarios;
+import modelos.Venta;
 import modelos.Ventas;
 
 /**
@@ -53,10 +55,10 @@ public class Backend extends javax.swing.JFrame {
         listadoVentas = conexion.listarVentas();
         
         cargarProductos();
-        cargarEmpleados();
+        cargarUsuarios();
+        cargarVentas();
         
         initComponents();
-        
         
     }
 
@@ -113,6 +115,7 @@ public class Backend extends javax.swing.JFrame {
         PanelListadoUsuarios1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jListVentas = new javax.swing.JList<>();
+        btnBorrarVenta = new javax.swing.JButton();
 
         PanelListadoUsuarios.setBorder(javax.swing.BorderFactory.createTitledBorder("Listado:"));
 
@@ -499,25 +502,38 @@ public class Backend extends javax.swing.JFrame {
         PanelListadoUsuarios1Layout.setVerticalGroup(
             PanelListadoUsuarios1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelListadoUsuarios1Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        btnBorrarVenta.setText("Borrar Venta");
+        btnBorrarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrarVentaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout TabVentasLayout = new javax.swing.GroupLayout(TabVentas);
         TabVentas.setLayout(TabVentasLayout);
         TabVentasLayout.setHorizontalGroup(
             TabVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TabVentasLayout.createSequentialGroup()
+            .addGroup(TabVentasLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(PanelListadoUsuarios1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(TabVentasLayout.createSequentialGroup()
+                .addGap(313, 313, 313)
+                .addComponent(btnBorrarVenta)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         TabVentasLayout.setVerticalGroup(
             TabVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(TabVentasLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(PanelListadoUsuarios1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(PanelListadoUsuarios1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnBorrarVenta)
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ventas", TabVentas);
@@ -545,7 +561,7 @@ public class Backend extends javax.swing.JFrame {
     }//GEN-LAST:event_jListProductosMouseClicked
 
     private void jListUsuarioValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListUsuarioValueChanged
-        mostrarEmpleados(this.jListUsuario.getSelectedIndex());
+        mostrarUsuarios(this.jListUsuario.getSelectedIndex());
     }//GEN-LAST:event_jListUsuarioValueChanged
 
     private void jListProductosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListProductosValueChanged
@@ -577,31 +593,33 @@ public class Backend extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBorrarProductoActionPerformed
 
     private void btnNuevoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoUsuarioActionPerformed
-        limpiarFormularioEmpleado();
+        limpiarFormularioUsuario();
     }//GEN-LAST:event_btnNuevoUsuarioActionPerformed
 
     private void btnGuardarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarUsuarioActionPerformed
-        Empleado emp = new Empleado();
-        if (!this.txtidEmp.getText().isBlank()) {
-            emp.setIdEmpleado(Integer.parseInt(this.txtidEmp.getText()));
+        Usuario usuario = new Usuario();
+        if (!this.txtnickUsuario.getText().isBlank()) {
+            usuario.setNickname(this.txtnickUsuario.getText());
         
         }
-        emp.setNombre(this.txtnickUsuario.getText());
-        emp.setApellidos(this.txtapellidosUsuario.getText());
-        emp.setProducto(producto);
-        emp.setSalario(Double.parseDouble(this.spinnerSalarioEmp.getValue().toString()));
-        emp.setEmail(this.txtemailEmp.getText());
-        emp.setCodigo(this.txtEmpCodigo.getText());
-        guardarEmpleado(emp);
+        usuario.setNombre(this.txtnombreUsuario.getText());
+        usuario.setApellidos(this.txtapellidosUsuario.getText());
+        usuario.setPassword(Integer.parseInt(this.txtpasswordUsuario.getText()));
+        if (this.jRadioButtonAdmin.isSelected()) {
+            usuario.setRol(0);
+        }else{
+            usuario.setRol(1);
+        }
+        guardarUsuario(usuario);
     }//GEN-LAST:event_btnGuardarUsuarioActionPerformed
 
     private void btnBorrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarUsuarioActionPerformed
-        Empleado emp = new Empleado();
-        if (!this.txtidEmp.getText().isBlank()) {
-            emp.setIdEmpleado(Integer.parseInt(this.txtidEmp.getText()));
+        Usuario usuario = new Usuario();
+        if (!this.txtnickUsuario.getText().isBlank()) {
+            usuario.setNickname(this.txtnickUsuario.getText());
         
         }
-        borrarEmpleado(emp);
+        borrarUsuario(usuario);
     }//GEN-LAST:event_btnBorrarUsuarioActionPerformed
 
     private void txtnombreProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnombreProductoActionPerformed
@@ -627,8 +645,15 @@ public class Backend extends javax.swing.JFrame {
     }//GEN-LAST:event_AbrirRutaActionPerformed
 
     private void jListVentasValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListVentasValueChanged
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jListVentasValueChanged
+
+    private void btnBorrarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarVentaActionPerformed
+        Venta venta = new Venta();
+        venta.setId(this.jListVentas.getSelectedIndex());
+        Venta venta_buscada = conexion.buscarVentaID(venta);
+        borrarVenta(venta_buscada);
+    }//GEN-LAST:event_btnBorrarVentaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -682,6 +707,7 @@ public class Backend extends javax.swing.JFrame {
     private javax.swing.JPanel TabVentas;
     private javax.swing.JButton btnBorrarProducto;
     private javax.swing.JButton btnBorrarUsuario;
+    private javax.swing.JButton btnBorrarVenta;
     private javax.swing.JButton btnGuardarProducto;
     private javax.swing.JButton btnGuardarUsuario;
     private javax.swing.JButton btnNuevoProducto;
@@ -716,15 +742,15 @@ public class Backend extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     
-//USUARIO------------------------------------------------------------------------------
+//PRODUCTOS------------------------------------------------------------------------------
     private void cargarProductos() {
         //Limpiar el listado
         this.modeloJListProductos.clear();
         //Actualizar el listado
         this.listadoProductos = conexion.listarProductos();
-        //Debemos coger el listado de departamentos y cargarlo en el modeloListProductos
+        //Debemos coger el listado de productos y cargarlo en el modeloJListProductos
         for (int i = 0; i < this.listadoProductos.size(); i++) {
-            //Añadimos cada departamento al jlist
+            //Añadimos cada porducto al jlist
             this.modeloJListProductos.addElement(this.listadoProductos.getProducto(SOMEBITS).getNombre());
             System.out.println(this.listadoProductos.getProducto(SOMEBITS).getNombre());
         }
@@ -751,7 +777,7 @@ public class Backend extends javax.swing.JFrame {
     }
 
     private void guardarProducto(Producto producto) {
-        //Compruebo si es un departamento nuevo o es una modificaion
+        //Compruebo si es un producto nuevo o es una modificaion
         if (producto.getId_producto() == -1) {
             conexion.insertarProducto(producto);
             cargarProductos();
@@ -765,8 +791,8 @@ public class Backend extends javax.swing.JFrame {
     }
 
     private void borrarProducto(Producto producto) {
-        //Comprobar que el departamento a borrar tenga un id valido
-        if ( producto.getIdProducto() > -1) {
+        //Comprobar que el producto a borrar tenga un id valido
+        if ( producto.getId_producto() > -1) {
             conexion.borrarProducto(producto);
             cargarProductos();
             this.jListProductos.setSelectedIndex(this.listadoProductos.size() - 1);
@@ -774,71 +800,98 @@ public class Backend extends javax.swing.JFrame {
         
     }
     
-//PRODUCTOS------------------------------------------------------------------------------
-    private void cargarEmpleados() {
+//USUARIOS------------------------------------------------------------------------------
+    private void cargarUsuarios() {
         //Limpiar el listado
-        this.modeloJListEmpleados.clear();
+        this.modeloJListUsuarios.clear();
         //Actualizar el listado
-        this.listadoEmpleados = conexion.listarEmpleados();
-        //Debemos coger el listado de departamentos y cargarlo en el modeloListProductos
-        for (int i = 0; i < this.listadoEmpleados.size(); i++) {
-            //Añadimos cada departamento al jlist
-            this.modeloJListEmpleados.addElement(this.listadoEmpleados.getEmpleado(i).getNombre());
-            System.out.println(this.listadoEmpleados.getEmpleado(i).getNombre());
+        this.listadoUsuarios = conexion.listarUsuarios();
+        //Debemos coger el listado de usuarios y cargarlo en el modeloJListUsuarios
+        for (int i = 0; i < this.listadoUsuarios.size(); i++) {
+            //Añadimos cada usuario al jlist
+            this.modeloJListUsuarios.addElement(this.listadoUsuarios.getUsuario(i).getNombre());
+            System.out.println(this.listadoUsuarios.getUsuario(i).getNombre());
         }
         
     }
     
-    private void mostrarEmpleados(int i){
+    private void mostrarUsuarios(int i){
         if ( i >= 0) {
-            Empleado empSel = new Empleado();
-            empSel = this.listadoEmpleados.getEmpleado(i);
+            Usuario usuarioSel = new Usuario();
+            usuarioSel = this.listadoUsuarios.getUsuario(i);
 
-            this.txtidEmp.setText(String.valueOf(empSel.getIdEmpleado()));
-            this.txtnickUsuario.setText(empSel.getNombre());
-            this.txtapellidosUsuario.setText(empSel.getApellidos());
-            this.txtemailEmp.setText(empSel.getEmail());
-            this.spinnerSalarioEmp.setValue(empSel.getSalario());
-            this.txtEmpCodigo.setText(empSel.getCodigo());
-            System.out.println(empSel.getProducto().getNombre());
+            this.txtnickUsuario.setText(usuarioSel.getNickname());
+            this.txtnombreUsuario.setText(usuarioSel.getNombre());
+            this.txtapellidosUsuario.setText(usuarioSel.getApellidos());
+            this.txtpasswordUsuario.setText(String.valueOf(usuarioSel.getPassword()));
+            if (usuarioSel.getRol() == 0) {
+                this.jRadioButtonAdmin.setSelected(true);
+                this.jRadioButtonGerente.setSelected(false);
+            }else{
+                this.jRadioButtonAdmin.setSelected(false);
+                this.jRadioButtonGerente.setSelected(true);
+            }
+            System.out.println(usuarioSel.getNombre());
         }
     }
 
-    //Borra el contenido de los campos del detalle de Productos
-    private void limpiarFormularioEmpleado() {
-        this.txtidEmp.setText("");
+    //Borra el contenido de los campos del detalle de Usuario
+    private void limpiarFormularioUsuario() {
         this.txtnickUsuario.setText("");
+        this.txtnombreUsuario.setText("");
         this.txtapellidosUsuario.setText("");
-        this.txtemailEmp.setText("");
-        this.spinnerSalarioEmp.setValue(950);
-        this.txtEmpCodigo.setText("");
+        this.txtpasswordUsuario.setText("");
+        this.jRadioButtonAdmin.setSelected(false);
+        this.jRadioButtonGerente.setSelected(true);
+        
     }
 
-    private void guardarEmpleado(Empleado emp) {
-        //Compruebo si es un departamento nuevo o es una modificaion
-        if (emp.getIdEmpleado() == -1) {
-            conexion.insertarEmpleado(emp);
-            cargarEmpleados();
-            this.jListUsuario.setSelectedIndex(this.listadoEmpleados.size() - 1);
+    private void guardarUsuario(Usuario usuario) {
+        //Compruebo si es un usuario nuevo o es una modificaion
+        if (usuario.getNickname().isBlank()) {
+            conexion.insertarUsuario(usuario);
+            cargarUsuarios();
+            this.jListUsuario.setSelectedIndex(this.listadoUsuarios.size() - 1);
         }else{
-            conexion.modificarEmpleado(emp);
+            conexion.modificarUsuario(usuario);
             int posSel = this.jListUsuario.getSelectedIndex();
-            cargarEmpleados();
+            cargarUsuarios();
             this.jListUsuario.setSelectedIndex(posSel);
         }
     }
 
-    private void borrarEmpleado(Empleado emp) {
-        //Comprobar que el departamento a borrar tenga un id valido
-        if ( emp.getIdEmpleado() > -1) {
-            conexion.borrarEmpleado(emp);
-            cargarEmpleados();
-            this.jListUsuario.setSelectedIndex(this.listadoEmpleados.size() - 1);
+    private void borrarUsuario(Usuario usuario) {
+        //Comprobar que el usuario a borrar tenga un nick valido
+        if ( usuario.getNickname() != "") {
+            conexion.borrarUsuario(usuario);
+            cargarUsuarios();
+            this.jListUsuario.setSelectedIndex(this.listadoUsuarios.size() - 1);
         }
         
     }
     
 //VENTAS------------------------------------------------------------------------------
-
+    private void cargarVentas() {
+        //Limpiar el listado
+        this.modeloJListVentas.clear();
+        //Actualizar el listado
+        this.listadoVentas = conexion.listarVentas();
+        //Debemos coger el listado de ventas y cargarlo en el modeloListVentas
+        for (int i = 0; i < this.listadoVentas.size(); i++) {
+            //Añadimos cada venta al jlist
+            this.modeloJListVentas.addElement(this.listadoVentas.getVenta(i));
+            System.out.println(this.listadoVentas.getVenta(i));
+        }
+    }
+    
+    private void borrarVenta(Venta venta) {
+        //Comprobar que la venta a borrar tenga un id valido
+        if ( venta.getId() > -1) {
+            conexion.borrarVenta(venta);
+            cargarVentas();
+            this.jListVentas.setSelectedIndex(this.listadoVentas.size() - 1);
+        }
+        
+    }
     
 }

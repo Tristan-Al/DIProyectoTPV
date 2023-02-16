@@ -27,8 +27,8 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         // Instanciamos la conexion
-//        GestionBD gestion = new GestionBD("localhost", "root", "", "gestortpv");
-        this.conexion = new GestionBD("localhost", "root", "dam_21017245_sge", "gestortpv");
+        GestionBD gestion = new GestionBD("localhost", "root", "", "gestortpv");
+ //       this.conexion = new GestionBD("localhost", "root", "dam_21017245_sge", "gestortpv");
         // Inicializamos los datos del modelo
         modeloComboUsuarios = new DefaultComboBoxModel();
         // Le damos los valores a la lista con los empleados de la bd
@@ -302,7 +302,7 @@ public class Login extends javax.swing.JFrame {
                 //Contrasena correcta siguiente pantalla
                 
                 JOptionPane.showMessageDialog(null, "Contrasena correcta", "Exito", JOptionPane.INFORMATION_MESSAGE);
-            
+                new tpvGUI().setVisible(true);
             } else {
                 // Informamos del error
                 JOptionPane.showMessageDialog(null, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);

@@ -154,7 +154,7 @@ public class GestionBD {
     }
 
     //MODIFICAR PRODUCTOS
-    public boolean modificarProducto(Producto productoAnterior, Producto productoPosterior) {
+    public boolean modificarProducto(Producto producto) {
         boolean resultado = true;
         try {
             //Nos conectamos a la BD
@@ -164,10 +164,10 @@ public class GestionBD {
             //Preparamos la sentencia SQL
             String sentencia = String.format(
                     "UPDATE `productos` SET `nombre`='%s', `precio`=%s, `stock`=%s WHERE `id_producto`=%s",
-                    productoPosterior.getNombre(),
-                    productoPosterior.getPrecio(),
-                    productoPosterior.getStock(),
-                    productoAnterior.getId_producto()
+                    producto.getNombre(),
+                    producto.getPrecio(),
+                    producto.getStock(),
+                    producto.getId_producto()
             );
             //Mostramos la consulta por consola
             System.out.println("Consulta SQL: " + sentencia);
@@ -180,7 +180,7 @@ public class GestionBD {
 
             return resultado;
         } catch (SQLException ex) {
-            System.err.println("Error al modificar el producto" + productoAnterior.getNombre() + ". " + ex.getMessage());
+            System.err.println("Error al modificar el producto" + producto.getNombre() + ". " + ex.getMessage());
             resultado = false;
         }
         return resultado;
@@ -362,7 +362,7 @@ public class GestionBD {
     }
 
     //MODIFICAR USUARIO
-    public boolean modificarUsuario(Usuario usuarioAnterior, Usuario usuarioPosterior) {
+    public boolean modificarUsuario(Usuario usuario) {
         boolean resultado = true;
         try {
             //Nos conectamos a la BD
@@ -372,12 +372,12 @@ public class GestionBD {
             //Preparamos la sentencia SQL
             String sentencia = String.format(
                     "UPDATE `usuarios` SET `nickname`='%s', `nombre`='%s', `apellidos`='%s', `user_pass`='%s', `rol`=%s WHERE `nickname`='%s'",
-                    usuarioPosterior.getNickname(),
-                    usuarioPosterior.getNombre(),
-                    usuarioPosterior.getApellidos(),
-                    usuarioPosterior.getPassword(),
-                    usuarioPosterior.getRol(),
-                    usuarioAnterior.getNickname()
+                    usuario.getNickname(),
+                    usuario.getNombre(),
+                    usuario.getApellidos(),
+                    usuario.getPassword(),
+                    usuario.getRol(),
+                    usuario.getNickname()
             );
             //Mostramos la consulta por consola
             System.out.println("Consulta SQL: " + sentencia);
@@ -390,7 +390,7 @@ public class GestionBD {
 
             return resultado;
         } catch (SQLException ex) {
-            System.err.println("Error al modificar el usuario" + usuarioAnterior.getNombre() + usuarioAnterior.getApellidos() + ". " + ex.getMessage());
+            System.err.println("Error al modificar el usuario" + usuario.getNombre() + usuario.getApellidos() + ". " + ex.getMessage());
             resultado = false;
         }
         return resultado;
@@ -551,7 +551,7 @@ public class GestionBD {
     }
     //MODIFICAR VENTA
 
-    public boolean modificarVenta(Venta ventaAnterior, Venta ventaPosterior) {
+    public boolean modificarVenta(Venta venta) {
         boolean resultado = true;
         try {
             //Nos conectamos a la BD
@@ -559,32 +559,17 @@ public class GestionBD {
             //Creamos la sentencia
             Statement stmt = conexion.createStatement();
             //Preparamos la sentencia SQL
-            String sentencia = String.format(
-                    "UPDATE `ventas` "
-                    + "SET `nickname_usuario` = '%s',`fecha_venta`='%s',`num_mesa`=%s "
-                    + "WHERE `id_venta` = %s",
-                    ventaPosterior.getUsuario().getNickname(),
-                    ventaPosterior.getFecha_venta(),
-                    ventaPosterior.getNum_mesa(),
-                    ventaAnterior.getId()
-            );
-            //Mostramos la consulta por consola
-            System.out.println("Consulta SQL: " + sentencia);
-            //Ejecutamos la consulta
-            resultado = stmt.execute(sentencia);
-
-            //BORRAR TODOS LOS PRODUCTOS DE LA VENTA ANTERIOR
-            borraDetalleVenta(ventaAnterior.getId());
+            String sentencia;
 
             //METER LOS PRODUCTOS DE LA VENTA POSTERIOR
             //Por cada producto insertamos una nueva linea en la tabla detalle ventas
             int numLinea = 0;
-            for (Producto producto : ventaPosterior.getProductos()) {
+            for (Producto producto : venta.getProductos()) {
                 sentencia = String.format(
                         "INSERT INTO `detalle_venta`"
                         + "(`id_venta`, `id_producto`, `num_linea`)"
                         + " VALUES ('%s','%s','%s')",
-                        ventaAnterior.getId(),
+                        venta.getId(),
                         producto.getId_producto(),
                         numLinea
                 );
@@ -599,7 +584,7 @@ public class GestionBD {
 
             return resultado;
         } catch (SQLException ex) {
-            System.err.println("Error al modificar la venta" + ventaAnterior + ". " + ex.getMessage());
+            System.err.println("Error al modificar la venta" + venta + ". " + ex.getMessage());
             resultado = false;
         }
         return resultado;
@@ -666,6 +651,7 @@ public class GestionBD {
         return resultado;
     }
 
+
     //BUSCAR VENTA
     public Venta buscarVenta(Venta venta) {
         Venta venta_buscada = null;
@@ -705,7 +691,40 @@ public class GestionBD {
 
         return venta_buscada;
     }
+    
+    //BUSCAR VENTA POR ID
+    public Venta buscarVentaID(Venta venta) {
+        Venta venta_buscada = null;
+        try {
+            //Nos conectamos a la BD
+            conectar();
+            //Creamos la sentencia
+            Statement stmt = conexion.createStatement();
+            //Preparamos la sentencia SQL
+            String sentencia = String.format(
+                    "SELECT * FROM `ventas` WHERE id_venta=%s",
+                    venta.getId());
+            //Mostramos la consulta por consola
+            System.out.println("Consulta SQL: " + sentencia);
+            //Ejecutamos la consulta
+            ResultSet rs = stmt.executeQuery(sentencia);
+            while (rs.next()) {
+                venta_buscada = getVenta(rs);
 
+            }
+            //Cierro el resultSet
+            rs.close();
+            //Cerrar la sentencia
+            stmt.close();
+            //Desconectar
+            desconectar();
+        } catch (SQLException ex) {
+            System.err.println("Error al buscar la venta por id." + ex.getMessage());
+        }
+
+        return venta_buscada;
+    }
+    
     //METODOS················································································
     /**
      * Metodo privado para obtener una Venta con todos sus productos a partir de
@@ -849,7 +868,7 @@ public class GestionBD {
             producto_buscado.setStock(stockActual - cantidad);
 
             //Modificamos el producto con el stock cambiado en la BD
-            modificarProducto(producto, producto_buscado);
+            modificarProducto(producto_buscado);
 
             resultado = true;
 
