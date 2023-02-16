@@ -1,12 +1,29 @@
 package bd;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import modelos.Producto;
 import modelos.Productos;
 import modelos.Usuario;
@@ -78,11 +95,10 @@ public class GestionBD {
             Statement stmt = conexion.createStatement();
             //Preparamos la sentencia SQL
             String sentencia = String.format(
-                    "INSERT INTO `productos`(`nombre`, `precio`, `stock`, `imagen`) VALUES ('%s',%s,%s,'%s')",
+                    "INSERT INTO `productos`(`nombre`, `precio`, `stock`) VALUES ('%s',%s,%s)",
                     producto.getNombre(),
                     producto.getPrecio(),
-                    producto.getStock(),
-                    producto.getImagen());
+                    producto.getStock());
             //Mostramos la consulta por consola
             System.out.println("Consulta SQL: " + sentencia);
             //Ejecutamos la consulta
@@ -94,7 +110,7 @@ public class GestionBD {
 
             return resultado;
         } catch (SQLException ex) {
-            System.out.println("Error al insertar el producto" + producto.getNombre() + ". " + ex.getMessage());
+            System.err.println("Error al insertar el producto" + producto.getNombre() + ". " + ex.getMessage());
             resultado = false;
         }
 
@@ -121,8 +137,7 @@ public class GestionBD {
                         rs.getInt("id_producto"),
                         rs.getString("nombre"),
                         rs.getDouble("precio"),
-                        rs.getInt("stock"),
-                        rs.getString("imagen")
+                        rs.getInt("stock")
                 ));
             }
             //Cierro el resultSet
@@ -132,7 +147,7 @@ public class GestionBD {
             //Desconectar
             desconectar();
         } catch (SQLException ex) {
-            System.out.println("Error al listar los productos. " + ex.getMessage());
+            System.err.println("Error al listar los productos. " + ex.getMessage());
         }
 
         return listado;
@@ -148,11 +163,10 @@ public class GestionBD {
             Statement stmt = conexion.createStatement();
             //Preparamos la sentencia SQL
             String sentencia = String.format(
-                    "UPDATE `productos` SET `nombre`='%s', `precio`=%s, `stock`=%s, `imagen`='%s' WHERE `id_producto`=%s",
+                    "UPDATE `productos` SET `nombre`='%s', `precio`=%s, `stock`=%s WHERE `id_producto`=%s",
                     productoPosterior.getNombre(),
                     productoPosterior.getPrecio(),
                     productoPosterior.getStock(),
-                    productoPosterior.getImagen(),
                     productoAnterior.getId_producto()
             );
             //Mostramos la consulta por consola
@@ -166,7 +180,7 @@ public class GestionBD {
 
             return resultado;
         } catch (SQLException ex) {
-            System.out.println("Error al modificar el producto" + productoAnterior.getNombre() + ". " + ex.getMessage());
+            System.err.println("Error al modificar el producto" + productoAnterior.getNombre() + ". " + ex.getMessage());
             resultado = false;
         }
         return resultado;
@@ -195,7 +209,7 @@ public class GestionBD {
 
             return resultado;
         } catch (SQLException ex) {
-            System.out.println("Error al borrar el producto" + producto.getNombre() + ". " + ex.getMessage());
+            System.err.println("Error al borrar el producto" + producto.getNombre() + ". " + ex.getMessage());
             resultado = false;
         }
 
@@ -223,8 +237,7 @@ public class GestionBD {
                         rs.getInt("id_producto"),
                         rs.getString("nombre"),
                         rs.getDouble("precio"),
-                        rs.getInt("stock"),
-                        rs.getString("imagen")
+                        rs.getInt("stock")
                 );
             }
             //Cierro el resultSet
@@ -234,7 +247,7 @@ public class GestionBD {
             //Desconectar
             desconectar();
         } catch (SQLException ex) {
-            System.out.println("Error al buscar el producto" + nombreProducto + ". " + ex.getMessage());
+            System.err.println("Error al buscar el producto" + nombreProducto + ". " + ex.getMessage());
         }
 
         return producto_buscado;
@@ -260,8 +273,7 @@ public class GestionBD {
                         rs.getInt("id_producto"),
                         rs.getString("nombre"),
                         rs.getDouble("precio"),
-                        rs.getInt("stock"),
-                        rs.getString("imagen")
+                        rs.getInt("stock")
                 );
             }
             //Cierro el resultSet
@@ -271,7 +283,7 @@ public class GestionBD {
             //Desconectar
             desconectar();
         } catch (SQLException ex) {
-            System.out.println("Error al buscar el producto " + id_producto + ". " + ex.getMessage());
+            System.err.println("Error al buscar el producto " + id_producto + ". " + ex.getMessage());
         }
 
         return producto_buscado;
@@ -305,7 +317,7 @@ public class GestionBD {
 
             return resultado;
         } catch (SQLException ex) {
-            System.out.println("Error al insertar el usuario" + usuario.getNombre() + ". " + ex.getMessage());
+            System.err.println("Error al insertar el usuario" + usuario.getNombre() + ". " + ex.getMessage());
             resultado = false;
         }
 
@@ -343,7 +355,7 @@ public class GestionBD {
             //Desconectar
             desconectar();
         } catch (SQLException ex) {
-            System.out.println("Error al listar los usuarios. " + ex.getMessage());
+            System.err.println("Error al listar los usuarios. " + ex.getMessage());
         }
 
         return listado;
@@ -378,7 +390,7 @@ public class GestionBD {
 
             return resultado;
         } catch (SQLException ex) {
-            System.out.println("Error al modificar el usuario" + usuarioAnterior.getNombre() + usuarioAnterior.getApellidos() + ". " + ex.getMessage());
+            System.err.println("Error al modificar el usuario" + usuarioAnterior.getNombre() + usuarioAnterior.getApellidos() + ". " + ex.getMessage());
             resultado = false;
         }
         return resultado;
@@ -407,7 +419,7 @@ public class GestionBD {
 
             return resultado;
         } catch (SQLException ex) {
-            System.out.println("Error al borrar el usuario" + usuario.getNickname() + ". " + ex.getMessage());
+            System.err.println("Error al borrar el usuario" + usuario.getNickname() + ". " + ex.getMessage());
             resultado = false;
         }
 
@@ -446,7 +458,7 @@ public class GestionBD {
             //Desconectar
             desconectar();
         } catch (SQLException ex) {
-            System.out.println("Error al buscar el usuario" + nicknameUsuario + ". " + ex.getMessage());
+            System.err.println("Error al buscar el usuario" + nicknameUsuario + ". " + ex.getMessage());
         }
 
         return usuario_buscado;
@@ -498,7 +510,7 @@ public class GestionBD {
 
             return resultado;
         } catch (SQLException ex) {
-            System.out.println("Error al insertar venta. " + ex.getMessage());
+            System.err.println("Error al insertar venta. " + ex.getMessage());
             resultado = false;
         }
 
@@ -531,7 +543,7 @@ public class GestionBD {
             //Desconectar
             desconectar();
         } catch (SQLException ex) {
-            System.out.println("Error al listar los productos. " + ex.getMessage());
+            System.err.println("Error al listar los productos. " + ex.getMessage());
         }
 
         return listado;
@@ -587,7 +599,7 @@ public class GestionBD {
 
             return resultado;
         } catch (SQLException ex) {
-            System.out.println("Error al modificar la venta" + ventaAnterior + ". " + ex.getMessage());
+            System.err.println("Error al modificar la venta" + ventaAnterior + ". " + ex.getMessage());
             resultado = false;
         }
         return resultado;
@@ -616,7 +628,7 @@ public class GestionBD {
 
             return resultado;
         } catch (SQLException ex) {
-            System.out.println("Error al borrar la venta " + id_venta + ". " + ex.getMessage());
+            System.err.println("Error al borrar la venta " + id_venta + ". " + ex.getMessage());
             resultado = false;
         }
         return resultado;
@@ -648,7 +660,7 @@ public class GestionBD {
             desconectar();
             return resultado;
         } catch (SQLException ex) {
-            System.out.println("Error al borrar la venta " + venta + ". " + ex.getMessage());
+            System.err.println("Error al borrar la venta " + venta + ". " + ex.getMessage());
             resultado = false;
         }
         return resultado;
@@ -688,7 +700,7 @@ public class GestionBD {
             //Desconectar
             desconectar();
         } catch (SQLException ex) {
-            System.out.println("Error al buscar la venta " + venta.toString() + ex.getMessage());
+            System.err.println("Error al buscar la venta " + venta.toString() + ex.getMessage());
         }
 
         return venta_buscada;
@@ -733,8 +745,7 @@ public class GestionBD {
                     new Producto(rs.getInt("id_producto"),
                             rs.getString("nombre"),
                             rs.getDouble("precio"),
-                            rs.getInt("stock"),
-                            rs.getString("imagen")));
+                            rs.getInt("stock")));
         }
         //Cierro el resultSet
         rs.close();
@@ -770,7 +781,7 @@ public class GestionBD {
             desconectar();
             return resultado;
         } catch (SQLException ex) {
-            System.out.println("Error al borrar los detalled e  " + id_venta + ". " + ex.getMessage());
+            System.err.println("Error al borrar los detalled e  " + id_venta + ". " + ex.getMessage());
             resultado = false;
         }
         return resultado;
@@ -807,18 +818,19 @@ public class GestionBD {
             //Desconectar
             desconectar();
         } catch (SQLException ex) {
-            System.out.println("Error al encontrar el producto. " + producto.getNombre() + ". " + ex.getMessage());
+            System.err.println("Error al encontrar el producto. " + producto.getNombre() + ". " + ex.getMessage());
         }
 
         return false;
     }
 
     /**
-     * Comprueba si hay stock suficiente y en caso de que hubiera
-     * resta la cantidad al stock actual del producto
+     * Comprueba si hay stock suficiente y en caso de que hubiera resta la
+     * cantidad al stock actual del producto
+     *
      * @param producto
      * @param cantidad
-     * @return 
+     * @return
      */
     public boolean actualizaStock(Producto producto, int cantidad) {
         boolean resultado = false;
@@ -826,21 +838,21 @@ public class GestionBD {
 
         //Buscamos el producto en la BD
         producto_buscado = buscarProductoId(producto.getId_producto());
-        
+
         //Cogemos el stock actual
         int stockActual = producto_buscado.getStock();
-        
+
         //Comprobamos que hay stock suficiente
         if (compruebaStock(producto_buscado, cantidad)) {
-            
+
             //Actualizamos el stock restando la cantidad indicada
             producto_buscado.setStock(stockActual - cantidad);
-            
+
             //Modificamos el producto con el stock cambiado en la BD
             modificarProducto(producto, producto_buscado);
-            
+
             resultado = true;
-            
+
         } else {
             System.out.println("No hay suficiente stock para el producto: "
                     + producto.getNombre() + ", stock: " + producto.getStock());
@@ -849,16 +861,95 @@ public class GestionBD {
 
         return resultado;
     }
-    
+
     /**
      * Comprueba si el usuario pasado es administrador
+     *
      * @param usuario
      * @return true si es administrador o false si no
      */
-    public boolean esAdmin(Usuario usuario){
+    public boolean esAdmin(Usuario usuario) {
         Usuario usuario_buscado = buscarUsuarioNick(usuario.getNickname());
         return usuario_buscado.getRol() == 0;
     }
-    
-    
+
+    public void setFoto(int idProducto, File f) {
+        PreparedStatement pstmt;
+        FileInputStream fis;
+        String sql;
+
+        try {
+            conectar();
+
+            sql = "UPDATE `productos` SET imagen = ? WHERE id_producto = ?";
+            fis = new FileInputStream(f);
+
+            pstmt = conexion.prepareStatement(sql);
+            pstmt.setBinaryStream(1, fis, (int) f.length());
+            pstmt.setInt(2, idProducto);
+            pstmt.executeUpdate();
+
+            desconectar();
+        } catch (SQLException | FileNotFoundException ex) {
+            System.err.println("Error al insertar la imagen del producto." + ex.getMessage());
+        }
+
+    }
+
+    public ImageIcon getBlobBD(int idProducto) {
+        ImageIcon imgProducto = null;
+        PreparedStatement pstmt;
+        int blodlength;
+        byte[] blobAsBytes;
+        String sql;
+
+        try {
+            conectar();
+
+            sql = "SELECT `imagen` FROM `productos` WHERE id_producto = " + idProducto;
+            pstmt = conexion.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Blob blob = rs.getBlob("imagen");
+                blodlength = (int) blob.length();
+                blobAsBytes = blob.getBytes(1, blodlength);
+                final BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(blobAsBytes));
+                imgProducto = new ImageIcon(bufferedImage);
+            }
+        } catch (SQLException | IOException ex) {
+            System.err.println("Error al recuperar la imagen del producto. " + ex.getMessage());
+        }
+        return imgProducto;
+    }
+
+    public static BufferedImage resizeToBufferedImage(File f, int newW, int newH) {
+        BufferedImage bufferedImage = null;
+
+        try {
+            bufferedImage = ImageIO.read(f);
+        } catch (IOException e) {
+
+        }
+        int w = bufferedImage.getWidth();
+        int h = bufferedImage.getHeight();
+        BufferedImage bufim = new BufferedImage(newW, newH, bufferedImage.getType());
+        Graphics2D g = bufim.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.drawImage(bufferedImage, 0, 0, newW, newH, 0, 0, w, h, null);
+        g.dispose();
+
+        return bufim;
+    }
+
+    public InputStream resizeFromFile(File f, int newW, int newH) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        RenderedImage bufferedImage = resizeToBufferedImage(f, newW, newH);
+        try {
+            ImageIO.write(bufferedImage, "png", baos);
+        } catch (IOException ex) {
+            Logger.getLogger(GestionBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new ByteArrayInputStream(baos.toByteArray());
+    }
+
 }

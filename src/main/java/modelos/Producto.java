@@ -15,29 +15,25 @@ public class Producto {
     private String nombre;
     private double precio;
     private int stock;
-    private String imagen;
 
     public Producto() {
         this.id_producto = -1;
         this.nombre = "";
         this.precio = 0.0;
         this.stock = 0;
-        this.imagen = null;
     }
     
-    public Producto(int id_producto, String nombre, double precio, int stock, String imagen) {
+    public Producto(int id_producto, String nombre, double precio, int stock) {
         this.id_producto = id_producto;
         this.nombre = nombre;
         this.precio = precio;
         this.stock = stock;
-        this.imagen = imagen;
     }
     
-    public Producto(String nombre, double precio, int stock, String imagen) {
+    public Producto(String nombre, double precio, int stock) {
         this.nombre = nombre;
         this.precio = precio;
         this.stock = stock;
-        this.imagen = imagen;
     }
 
     public int getId_producto() {
@@ -72,22 +68,13 @@ public class Producto {
         this.stock = stock;
     }
 
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
-
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 19 * hash + this.id_producto;
-        hash = 19 * hash + Objects.hashCode(this.nombre);
-        hash = 19 * hash + (int) (Double.doubleToLongBits(this.precio) ^ (Double.doubleToLongBits(this.precio) >>> 32));
-        hash = 19 * hash + this.stock;
-        hash = 19 * hash + Objects.hashCode(this.imagen);
+        hash = 71 * hash + this.id_producto;
+        hash = 71 * hash + Objects.hashCode(this.nombre);
+        hash = 71 * hash + (int) (Double.doubleToLongBits(this.precio) ^ (Double.doubleToLongBits(this.precio) >>> 32));
+        hash = 71 * hash + this.stock;
         return hash;
     }
 
@@ -112,10 +99,7 @@ public class Producto {
         if (this.stock != other.stock) {
             return false;
         }
-        if (!Objects.equals(this.nombre, other.nombre)) {
-            return false;
-        }
-        return Objects.equals(this.imagen, other.imagen);
+        return Objects.equals(this.nombre, other.nombre);
     }
 
     @Override
@@ -125,7 +109,6 @@ public class Producto {
                 + "\n \t nombre=" + nombre 
                 + "\n \t precio=" + precio 
                 + "\n \t stock=" + stock 
-                + "\n \t imagen=" + imagen 
                 + "} \n";
     }
 }

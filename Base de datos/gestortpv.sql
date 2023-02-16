@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-02-2023 a las 11:10:56
+-- Tiempo de generación: 16-02-2023 a las 13:02:04
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.1.12
 
@@ -46,7 +46,7 @@ CREATE TABLE `productos` (
   `nombre` varchar(100) NOT NULL,
   `precio` double DEFAULT 0,
   `stock` int(11) DEFAULT 0,
-  `imagen` varchar(100) DEFAULT NULL
+  `imagen` mediumblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

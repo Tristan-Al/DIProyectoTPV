@@ -17,8 +17,8 @@ public class Pruebas {
         GestionBD gestion = new GestionBD("localhost", "root", "dam_21017245_sge", "gestortpv");
 
 //        //INSERTAR
-        Producto producto = new Producto("Cerveza", 2.50, 50, "imgCerveza.png");
-        Producto producto2 = new Producto("Vino", 2.50, 50, "imgVino.png");
+        Producto producto = new Producto("Cerveza", 2.50, 50);
+        Producto producto2 = new Producto("Vino", 2.50, 50);
         Usuario usuario = new Usuario("rbarea", "raul", "barea", "123456", 0);
 //
 //        gestion.insertarProducto(producto);
@@ -26,7 +26,7 @@ public class Pruebas {
 //        gestion.insertarUsuario(usuario);
 //
 //        //LISTAR
-//        Producto producto = new Producto("Cerveza", 2.50, 50, "imgCerveza.png");
+//        Producto producto = new Producto("Cerveza", 2.50, 50);
 //        Usuario usuario = new Usuario("rbarea", "raul", "barea", "123456", 0);
 //
 //        Productos listadoProducto = gestion.listarProductos();
@@ -41,17 +41,17 @@ public class Pruebas {
 //        }
 //
 //        //MODIFICAR
-//        Producto producto = new Producto("Cerveza", 2.50, 50, "imgCerveza.png");
+//        Producto producto = new Producto("Cerveza", 2.50, 50);
 //        Producto producto1 = gestion.buscarProductoNom(producto.getNombre());
 //        Usuario usuario1 = new Usuario("rbarea", "raul", "barea", "123456", 0);
-//        Producto producto2 = new Producto("Vino", 2.50, 50, "imgVino.png");
+//        Producto producto2 = new Producto("Vino", 2.50, 50);
 //        Usuario usuario2 = new Usuario("rbarea", "Raul", "Barea Rodriguez", "123456", 0);
 //
 //        gestion.modificarProducto(producto1, producto2);
 //        gestion.modificarUsuario(usuario1, usuario2);
 //
 //        //BUSCAR
-//        Producto producto = new Producto("Cerveza", 2.50, 50, "imgCerveza.png");
+//        Producto producto = new Producto("Cerveza", 2.50, 50);
 //        Usuario usuario = new Usuario("rbarea", "raul", "barea", "123456", 0);
 //
 //        Producto producto2 = gestion.buscarProductoNom(producto.getNombre());
@@ -61,7 +61,7 @@ public class Pruebas {
 //        System.out.println(usuario2);
 //
 //        //BORRAR
-//        Producto producto = new Producto("Vino", 2.50, 50, "imgVino.png");
+//        Producto producto = new Producto("Vino", 2.50, 50);
 //        Producto producto2 = gestion.buscarProductoNom(producto.getNombre());
 //
 //        Usuario usuario2 = new Usuario("rbarea", "Raul", "Barea Rodriguez", "123456", 0);
@@ -102,6 +102,5 @@ public class Pruebas {
 //        System.out.println(gestion.compruebaStock(producto, 10));
         
 //        System.out.println(gestion.esAdmin(usuario));
-        
     }
 }
