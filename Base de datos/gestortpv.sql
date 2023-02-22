@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-02-2023 a las 13:02:04
+-- Tiempo de generación: 22-02-2023 a las 14:27:10
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.1.12
 
@@ -46,7 +46,7 @@ CREATE TABLE `productos` (
   `nombre` varchar(100) NOT NULL,
   `precio` double DEFAULT 0,
   `stock` int(11) DEFAULT 0,
-  `imagen` mediumblob NOT NULL
+  `imagen` mediumblob NOT NULL DEFAULT ' '
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -62,6 +62,13 @@ CREATE TABLE `usuarios` (
   `user_pass` int(4) NOT NULL,
   `rol` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`nickname`, `nombre`, `apellidos`, `user_pass`, `rol`) VALUES
+('rbarea', 'Raul', 'Barea Rodriguez', 1234, 0);
 
 -- --------------------------------------------------------
 
