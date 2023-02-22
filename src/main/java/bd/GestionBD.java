@@ -110,7 +110,7 @@ public class GestionBD {
 
             return resultado;
         } catch (SQLException ex) {
-            System.err.println("Error al insertar el producto" + producto.getNombre() + ". " + ex.getMessage());
+            System.err.println("Error al insertar el producto " + producto.getNombre() + ". " + ex.getMessage());
             resultado = false;
         }
 

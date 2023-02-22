@@ -9,6 +9,7 @@ import java.io.File;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import modelos.Producto;
 import modelos.Productos;
 import modelos.Usuario;
@@ -92,6 +93,7 @@ public class Backend extends javax.swing.JFrame {
         txtpasswordUsuario = new javax.swing.JTextField();
         jRadioButtonAdmin = new javax.swing.JRadioButton();
         jRadioButtonGerente = new javax.swing.JRadioButton();
+        btnInsertarUsuario = new javax.swing.JButton();
         TabProductos = new javax.swing.JPanel();
         PanelListadoProductos = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -182,6 +184,13 @@ public class Backend extends javax.swing.JFrame {
         jRadioButtonGerente.setSelected(true);
         jRadioButtonGerente.setText("Gerente/Vendedor");
 
+        btnInsertarUsuario.setText("Insertar");
+        btnInsertarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsertarUsuarioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PanelDetalleUsuarioLayout = new javax.swing.GroupLayout(PanelDetalleUsuario);
         PanelDetalleUsuario.setLayout(PanelDetalleUsuarioLayout);
         PanelDetalleUsuarioLayout.setHorizontalGroup(
@@ -201,6 +210,8 @@ public class Backend extends javax.swing.JFrame {
                         .addGroup(PanelDetalleUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(PanelDetalleUsuarioLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnInsertarUsuario)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnBorrarUsuario)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnNuevoUsuario)
@@ -249,7 +260,8 @@ public class Backend extends javax.swing.JFrame {
                 .addGroup(PanelDetalleUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardarUsuario)
                     .addComponent(btnNuevoUsuario)
-                    .addComponent(btnBorrarUsuario))
+                    .addComponent(btnBorrarUsuario)
+                    .addComponent(btnInsertarUsuario))
                 .addGap(16, 16, 16))
         );
 
@@ -413,12 +425,13 @@ public class Backend extends javax.swing.JFrame {
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtidProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtnombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinnerStockProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinnerPrecioProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PanelGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(PanelGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(PanelDetalleProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jSpinnerPrecioProducto, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtnombreProducto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE))
+                    .addComponent(jSpinnerStockProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelDetalleProductosLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -580,6 +593,8 @@ public class Backend extends javax.swing.JFrame {
         
         }
         producto.setNombre(this.txtnombreProducto.getText());
+        producto.setPrecio(Double.parseDouble(this.jSpinnerPrecioProducto.getValue().toString()));
+        producto.setStock(Integer.parseInt(this.jSpinnerStockProducto.getValue().toString()));
         guardarProducto(producto);
     }//GEN-LAST:event_btnGuardarProductoActionPerformed
 
@@ -656,6 +671,27 @@ public class Backend extends javax.swing.JFrame {
         borrarVenta(venta_buscada);
     }//GEN-LAST:event_btnBorrarVentaActionPerformed
 
+    private void btnInsertarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarUsuarioActionPerformed
+        Usuario usuario = new Usuario();
+        if (!this.txtnickUsuario.getText().isBlank()) {
+            usuario.setNickname(this.txtnickUsuario.getText());
+            if (conexion.buscarUsuarioNick(usuario.getNickname()) == null) {
+                usuario.setNombre(this.txtnombreUsuario.getText());
+                usuario.setApellidos(this.txtapellidosUsuario.getText());
+                usuario.setPassword(Integer.parseInt(this.txtpasswordUsuario.getText()));
+                if (this.jRadioButtonAdmin.isSelected()) {
+                    usuario.setRol(0);
+                }else{
+                    usuario.setRol(1);
+                }
+                this.conexion.insertarUsuario(usuario);
+            }else{
+                JOptionPane.showMessageDialog(null, "Ya existe un usuario con ese nickname", "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        this.cargarUsuarios();
+    }//GEN-LAST:event_btnInsertarUsuarioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -689,7 +725,7 @@ public class Backend extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
+                new Backend().setVisible(true);
             }
         });
     }
@@ -711,6 +747,7 @@ public class Backend extends javax.swing.JFrame {
     private javax.swing.JButton btnBorrarVenta;
     private javax.swing.JButton btnGuardarProducto;
     private javax.swing.JButton btnGuardarUsuario;
+    private javax.swing.JButton btnInsertarUsuario;
     private javax.swing.JButton btnNuevoProducto;
     private javax.swing.JButton btnNuevoUsuario;
     private javax.swing.JLabel jLabel1;
@@ -848,17 +885,10 @@ public class Backend extends javax.swing.JFrame {
     }
 
     private void guardarUsuario(Usuario usuario) {
-        //Compruebo si es un usuario nuevo o es una modificaion
-        if (usuario.getNickname().isBlank()) {
-            conexion.insertarUsuario(usuario);
-            cargarUsuarios();
-            this.jListUsuario.setSelectedIndex(this.listadoUsuarios.size() - 1);
-        }else{
-            conexion.modificarUsuario(usuario);
-            int posSel = this.jListUsuario.getSelectedIndex();
-            cargarUsuarios();
-            this.jListUsuario.setSelectedIndex(posSel);
-        }
+        conexion.modificarUsuario(usuario);
+        int posSel = this.jListUsuario.getSelectedIndex();
+        cargarUsuarios();
+        this.jListUsuario.setSelectedIndex(posSel);
     }
 
     private void borrarUsuario(Usuario usuario) {

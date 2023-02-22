@@ -148,6 +148,8 @@
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Group type="102" attributes="0">
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          <Component id="btnInsertarUsuario" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Component id="btnBorrarUsuario" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Component id="btnNuevoUsuario" min="-2" max="-2" attributes="0"/>
@@ -209,6 +211,7 @@
                               <Component id="btnGuardarUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnNuevoUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnBorrarUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnInsertarUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
@@ -283,6 +286,14 @@
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Gerente/Vendedor"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnInsertarUsuario">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Insertar"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInsertarUsuarioActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -392,12 +403,14 @@
                               <Component id="jLabel1" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
                               <Component id="txtidProducto" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
                               <Component id="jLabel2" alignment="0" min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="txtnombreProducto" alignment="0" min="-2" pref="135" max="-2" attributes="0"/>
                               <Component id="jLabel3" alignment="0" min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="jSpinnerStockProducto" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel8" alignment="0" min="-2" pref="59" max="-2" attributes="0"/>
-                              <Component id="jSpinnerPrecioProducto" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="PanelGuardar" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="jSpinnerPrecioProducto" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtnombreProducto" alignment="0" pref="135" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="jSpinnerStockProducto" alignment="0" min="-2" pref="145" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="281" max="32767" attributes="0"/>
                       </Group>
