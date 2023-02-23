@@ -35,6 +35,7 @@ public class Productos {
     
     //Recoger un producto de la lista
     public Producto getProducto(int posicion){
+        System.out.println("Posicion que se la pasa el getProducto" + posicion);
         return lista.get(posicion);
     }
 }

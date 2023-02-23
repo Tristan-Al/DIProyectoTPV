@@ -787,10 +787,12 @@ public class Backend extends javax.swing.JFrame {
         //Actualizar el listado
         this.listadoProductos = conexion.listarProductos();
         //Debemos coger el listado de productos y cargarlo en el modeloJListProductos
+        System.out.println("Tamaño listado" + this.listadoProductos.size());
         for (int i = 0; i < this.listadoProductos.size(); i++) {
+            System.out.println("Posicion producto en el listado" + i);
             //Añadimos cada porducto al jlist
-            this.modeloJListProductos.addElement(this.listadoProductos.getProducto(SOMEBITS).getNombre());
-            System.out.println(this.listadoProductos.getProducto(SOMEBITS).getNombre());
+            this.modeloJListProductos.addElement(this.listadoProductos.getProducto(i).getNombre());
+            System.out.println(this.listadoProductos.getProducto(i).getNombre());
         }
         
     }
