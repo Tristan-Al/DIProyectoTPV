@@ -73,6 +73,7 @@ public class Backend extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         TabUsuarios = new javax.swing.JPanel();
         PanelListadoUsuarios = new javax.swing.JPanel();
@@ -179,8 +180,10 @@ public class Backend extends javax.swing.JFrame {
 
         jLabel10.setText("Nombre:");
 
+        buttonGroup1.add(jRadioButtonAdmin);
         jRadioButtonAdmin.setText("Administrador");
 
+        buttonGroup1.add(jRadioButtonGerente);
         jRadioButtonGerente.setSelected(true);
         jRadioButtonGerente.setText("Gerente/Vendedor");
 
@@ -750,6 +753,7 @@ public class Backend extends javax.swing.JFrame {
     private javax.swing.JButton btnInsertarUsuario;
     private javax.swing.JButton btnNuevoProducto;
     private javax.swing.JButton btnNuevoUsuario;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
