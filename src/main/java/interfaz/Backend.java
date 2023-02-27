@@ -111,7 +111,6 @@ public class Backend extends javax.swing.JFrame {
         jSpinnerStockProducto = new javax.swing.JSpinner();
         jSpinnerPrecioProducto = new javax.swing.JSpinner();
         PanelGuardar = new javax.swing.JPanel();
-        BotonGuardarImagenProducto = new javax.swing.JButton();
         txtRutaFichero = new javax.swing.JTextField();
         AbrirRuta = new javax.swing.JButton();
         TabVentas = new javax.swing.JPanel();
@@ -379,13 +378,6 @@ public class Backend extends javax.swing.JFrame {
 
         PanelGuardar.setBorder(javax.swing.BorderFactory.createTitledBorder("Subir imagen"));
 
-        BotonGuardarImagenProducto.setText("Guardar imagen");
-        BotonGuardarImagenProducto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonGuardarImagenProductoActionPerformed(evt);
-            }
-        });
-
         txtRutaFichero.setBorder(javax.swing.BorderFactory.createTitledBorder("Ruta:"));
 
         AbrirRuta.setText("Abrir");
@@ -405,10 +397,6 @@ public class Backend extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(AbrirRuta)
                 .addContainerGap(14, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelGuardarLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(BotonGuardarImagenProducto)
-                .addGap(143, 143, 143))
         );
         PanelGuardarLayout.setVerticalGroup(
             PanelGuardarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -417,9 +405,7 @@ public class Backend extends javax.swing.JFrame {
                 .addGroup(PanelGuardarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtRutaFichero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(AbrirRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addComponent(BotonGuardarImagenProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout PanelDetalleProductosLayout = new javax.swing.GroupLayout(PanelDetalleProductos);
@@ -468,7 +454,7 @@ public class Backend extends javax.swing.JFrame {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSpinnerStockProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(PanelGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(PanelDetalleProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -603,6 +589,8 @@ public class Backend extends javax.swing.JFrame {
         producto.setPrecio(Double.parseDouble(this.jSpinnerPrecioProducto.getValue().toString()));
         producto.setStock(Integer.parseInt(this.jSpinnerStockProducto.getValue().toString()));
         guardarProducto(producto);
+        File fselect = new File(this.txtRutaFichero.getText());
+        conexion.setFoto(Integer.parseInt(this.txtidProducto.getText()), fselect);
     }//GEN-LAST:event_btnGuardarProductoActionPerformed
 
     private void btnBorrarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarProductoActionPerformed
@@ -648,11 +636,6 @@ public class Backend extends javax.swing.JFrame {
     private void txtnombreProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnombreProductoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtnombreProductoActionPerformed
-
-    private void BotonGuardarImagenProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonGuardarImagenProductoActionPerformed
-        File fselect = new File(this.txtRutaFichero.getText());
-        conexion.setFoto(Integer.parseInt(this.txtidProducto.getText()), fselect);
-    }//GEN-LAST:event_BotonGuardarImagenProductoActionPerformed
 
     private void AbrirRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirRutaActionPerformed
         File fselect = new File(this.txtRutaFichero.getText());
@@ -741,7 +724,6 @@ public class Backend extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AbrirRuta;
-    private javax.swing.JButton BotonGuardarImagenProducto;
     private javax.swing.JPanel PanelDetalleProductos;
     private javax.swing.JPanel PanelDetalleUsuario;
     private javax.swing.JPanel PanelGuardar;

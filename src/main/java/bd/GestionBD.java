@@ -933,6 +933,7 @@ public class GestionBD {
             conectar();
 
             sql = "SELECT `imagen` FROM `productos` WHERE id_producto = " + idProducto;
+            System.out.println(sql  );
             pstmt = conexion.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
