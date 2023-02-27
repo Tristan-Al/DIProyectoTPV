@@ -51,7 +51,6 @@ public class Backend extends javax.swing.JFrame {
         
         //Instanciamos la conexion
         conexion = new GestionBD("localhost", "root", "", "gestortpv");
-        //conexion = new GestionBD("localhost", "root", "dam_21017245_sge", "gestortpv");
         listadoProductos = conexion.listarProductos();
         listadoUsuarios = conexion.listarUsuarios();
         listadoVentas = conexion.listarVentas();
@@ -186,6 +185,11 @@ public class Backend extends javax.swing.JFrame {
         buttonGroup1.add(jRadioButtonGerente);
         jRadioButtonGerente.setSelected(true);
         jRadioButtonGerente.setText("Gerente/Vendedor");
+        jRadioButtonGerente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonGerenteActionPerformed(evt);
+            }
+        });
 
         btnInsertarUsuario.setText("Insertar");
         btnInsertarUsuario.addActionListener(new java.awt.event.ActionListener() {
@@ -668,10 +672,8 @@ public class Backend extends javax.swing.JFrame {
     }//GEN-LAST:event_jListVentasValueChanged
 
     private void btnBorrarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarVentaActionPerformed
-        Venta venta = new Venta();
-        venta.setId(this.jListVentas.getSelectedIndex());
-        Venta venta_buscada = conexion.buscarVentaID(venta);
-        borrarVenta(venta_buscada);
+        Venta venta = listadoVentas.getVenta(this.jListVentas.getSelectedIndex());
+        borrarVenta(venta);
     }//GEN-LAST:event_btnBorrarVentaActionPerformed
 
     private void btnInsertarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarUsuarioActionPerformed
@@ -694,6 +696,10 @@ public class Backend extends javax.swing.JFrame {
         }
         this.cargarUsuarios();
     }//GEN-LAST:event_btnInsertarUsuarioActionPerformed
+
+    private void jRadioButtonGerenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonGerenteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButtonGerenteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -861,8 +867,7 @@ public class Backend extends javax.swing.JFrame {
     
     private void mostrarUsuarios(int i){
         if ( i >= 0) {
-            Usuario usuarioSel = new Usuario();
-            usuarioSel = this.listadoUsuarios.getUsuario(i);
+            Usuario usuarioSel = this.listadoUsuarios.getUsuario(i);
 
             this.txtnickUsuario.setText(usuarioSel.getNickname());
             this.txtnombreUsuario.setText(usuarioSel.getNombre());

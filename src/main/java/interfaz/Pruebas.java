@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
+import modelos.Pair;
 import modelos.Producto;
 import modelos.Usuario;
 import modelos.Venta;
@@ -14,7 +15,7 @@ public class Pruebas {
 
     public static void main(String[] args) {
 //        GestionBD gestion = new GestionBD("localhost", "root", "", "gestortpv");
-        GestionBD gestion = new GestionBD("localhost", "root", "dam_21017245_sge", "gestortpv");
+        GestionBD gestion = new GestionBD("localhost", "root", "", "gestortpv");
 
 //        //INSERTAR
         Producto producto = new Producto("Cerveza", 2.50, 50);
@@ -70,22 +71,41 @@ public class Pruebas {
 //        gestion.borrarUsuario(usuario2);
 
         //VENTAS
-//        ArrayList<Producto> productos = new ArrayList();
-//        producto.setId_producto(2);
-//        producto2.setId_producto(3);
+        ArrayList<Pair> productos = new ArrayList();
+        producto.setId_producto(2);
+        producto2.setId_producto(3);
 //
-//        productos.add(producto);
-//        productos.add(producto2);
+//        productos.add(new Pair(producto,2));
 //        
-//        Venta ventaPrueba = new Venta(12, 1, usuario, LocalDateTime.of(2023, 2, 12, 15, 54, 03), productos);
+        Venta ventaPrueba = new Venta(1, 1, usuario, LocalDateTime.of(2023, 2, 26, 19, 49, 28), productos);
 
+//        System.out.println(ventaPrueba.toString());
+//        
+//        System.out.println(" Anadido una cocacola");
+//        
+//        ventaPrueba.addProducto(producto);
+//        
+//        System.out.println(ventaPrueba.toString());
 //        gestion.insertarVenta(ventaPrueba);
+
 //        Ventas ventas = gestion.listarVentas();
 //        for (int i = 0; i < ventas.size(); i++) {
 //            System.out.println(ventas.getVenta(i));
 //        }
+
+        
+        
+        java.sql.Date fecha = java.sql.Date.valueOf(ventaPrueba.getFecha_venta().toLocalDate());
+        java.sql.Time hora = java.sql.Time.valueOf(ventaPrueba.getFecha_venta().toLocalTime());
+        System.out.println(fecha + " " + hora);
+        
+        System.out.println("");
+
+        System.out.println(ventaPrueba.getFecha_venta().toString().replaceAll("T", " "));
+
+//        gestion.borrarVenta(ventaPrueba);
         //System.out.println(gestion.buscarVenta(ventaPrueba));;
-        Usuario usuarioModificado = new Usuario("talonso2", "Tristan", "Alonso", 1234, 1);
+//        Usuario usuarioModificado = new Usuario("talonso2", "Tristan", "Alonso", 1234, 1);
 //        gestion.insertarUsuario(usuarioModificado);
 //        
 //        ArrayList<Producto> productos2 = new ArrayList();

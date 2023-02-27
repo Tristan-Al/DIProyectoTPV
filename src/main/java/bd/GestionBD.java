@@ -19,11 +19,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import modelos.Pair;
 import modelos.Producto;
 import modelos.Productos;
 import modelos.Usuario;
@@ -490,16 +492,18 @@ public class GestionBD {
 
             //Por cada producto insertamos una nueva linea en la tabla detalle ventas
             int numLinea = 0;
-            for (Producto producto : venta.getProductos()) {
+            for (Pair par : venta.getProductos()) {
                 sentencia = String.format(
                         "INSERT INTO `detalle_venta`"
-                        + "(`id_venta`, `id_producto`, `num_linea`)"
-                        + " VALUES ('%s','%s','%s')",
+                                + "(`id_venta`, `id_producto`, `num_linea`, `cantidad`) "
+                                + "VALUES ('%s','%s','%s','%s')",
                         ventaInsertada.getId(),
-                        producto.getId_producto(),
-                        numLinea
+                        par.getProducto().getId_producto(),
+                        numLinea,
+                        par.getCantidad()
                 );
                 numLinea++;
+                System.out.println("Consulta SQL: " + sentencia);
                 resultado = stmt.execute(sentencia);
 
             }
@@ -564,14 +568,15 @@ public class GestionBD {
             //METER LOS PRODUCTOS DE LA VENTA POSTERIOR
             //Por cada producto insertamos una nueva linea en la tabla detalle ventas
             int numLinea = 0;
-            for (Producto producto : venta.getProductos()) {
+            for (Pair par : venta.getProductos()) {
                 sentencia = String.format(
                         "INSERT INTO `detalle_venta`"
-                        + "(`id_venta`, `id_producto`, `num_linea`)"
-                        + " VALUES ('%s','%s','%s')",
+                                + "(`id_venta`, `id_producto`, `num_linea`, `cantidad`) "
+                                + "VALUES ('','','','')",
                         venta.getId(),
-                        producto.getId_producto(),
-                        numLinea
+                        par.getProducto().getId_producto(),
+                        numLinea,
+                        par.getCantidad()
                 );
                 numLinea++;
                 resultado = stmt.execute(sentencia);
@@ -629,11 +634,11 @@ public class GestionBD {
             //Preparamos la sentencia SQL
             String sentencia = String.format(
                     "DELETE FROM `ventas` "
-                    + "WHERE `nickname_usuario` = %s "
-                    + "AND `fecha_venta` = %s "
-                    + "AND `num_mesa` = %s",
+                    + "WHERE `nickname_usuario` = '%s' "
+                    + "AND `fecha_venta` = '%s' "
+                    + "AND `num_mesa` = '%s'",
                     venta.getUsuario().getNickname(),
-                    venta.getFecha_venta(),
+                    venta.getFecha_venta().toString().replaceAll("T", " "),
                     venta.getNum_mesa());
             //Mostramos la consulta por consola
             System.out.println("Consulta SQL: " + sentencia);
@@ -645,7 +650,7 @@ public class GestionBD {
             desconectar();
             return resultado;
         } catch (SQLException ex) {
-            System.err.println("Error al borrar la venta " + venta + ". " + ex.getMessage());
+            System.err.println("Error al borrar la venta . " + ex.getMessage());
             resultado = false;
         }
         return resultado;
@@ -760,11 +765,13 @@ public class GestionBD {
         // Mientras que haya productos los anade al arrayList de productos de
         // la venta
         while (rs.next()) {
-            venta.addProducto(
-                    new Producto(rs.getInt("id_producto"),
+            venta.addPairProducto(
+                    new Pair(
+                        new Producto(rs.getInt("id_producto"),
                             rs.getString("nombre"),
                             rs.getDouble("precio"),
-                            rs.getInt("stock")));
+                            rs.getInt("stock")),
+                 rs.getInt("cantidad")));
         }
         //Cierro el resultSet
         rs.close();

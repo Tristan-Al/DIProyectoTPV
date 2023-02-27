@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-02-2023 a las 14:31:05
+-- Tiempo de generación: 27-02-2023 a las 12:48:28
 -- Versión del servidor: 10.4.27-MariaDB
--- Versión de PHP: 8.1.12
+-- Versión de PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,10 +29,13 @@ USE `gestortpv`;
 -- Estructura de tabla para la tabla `detalle_venta`
 --
 
-CREATE TABLE `detalle_venta` (
+CREATE TABLE IF NOT EXISTS `detalle_venta` (
   `id_venta` int(11) NOT NULL,
   `id_producto` int(11) DEFAULT NULL,
-  `num_linea` int(11) NOT NULL
+  `num_linea` int(11) NOT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_venta`,`num_linea`),
+  KEY `id_producto` (`id_producto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -41,13 +44,14 @@ CREATE TABLE `detalle_venta` (
 -- Estructura de tabla para la tabla `productos`
 --
 
-CREATE TABLE `productos` (
-  `id_producto` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `productos` (
+  `id_producto` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL,
   `precio` double DEFAULT 0,
   `stock` int(11) DEFAULT 0,
-  `imagen` mediumblob NOT NULL DEFAULT ' '
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `imagen` mediumblob NOT NULL DEFAULT ' ',
+  PRIMARY KEY (`id_producto`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `productos`
@@ -62,12 +66,13 @@ INSERT INTO `productos` (`id_producto`, `nombre`, `precio`, `stock`, `imagen`) V
 -- Estructura de tabla para la tabla `usuarios`
 --
 
-CREATE TABLE `usuarios` (
+CREATE TABLE IF NOT EXISTS `usuarios` (
   `nickname` varchar(100) NOT NULL,
   `nombre` varchar(100) DEFAULT NULL,
   `apellidos` varchar(100) DEFAULT NULL,
   `user_pass` int(4) NOT NULL,
-  `rol` tinyint(1) NOT NULL DEFAULT 1
+  `rol` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`nickname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -75,7 +80,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`nickname`, `nombre`, `apellidos`, `user_pass`, `rol`) VALUES
-('rbarea', 'Raul', 'Barea Rodriguez', 1234, 0);
+('rbarea', 'Raul', 'Barea Rodriguez', 1234, 0),
+('talonso', 'Tristan', 'Alonso', 1111, 0);
 
 -- --------------------------------------------------------
 
@@ -83,58 +89,14 @@ INSERT INTO `usuarios` (`nickname`, `nombre`, `apellidos`, `user_pass`, `rol`) V
 -- Estructura de tabla para la tabla `ventas`
 --
 
-CREATE TABLE `ventas` (
-  `id_venta` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `ventas` (
+  `id_venta` int(11) NOT NULL AUTO_INCREMENT,
   `nickname_usuario` varchar(100) NOT NULL,
   `fecha_venta` datetime DEFAULT NULL,
-  `num_mesa` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `detalle_venta`
---
-ALTER TABLE `detalle_venta`
-  ADD PRIMARY KEY (`id_venta`,`num_linea`),
-  ADD KEY `id_producto` (`id_producto`);
-
---
--- Indices de la tabla `productos`
---
-ALTER TABLE `productos`
-  ADD PRIMARY KEY (`id_producto`);
-
---
--- Indices de la tabla `usuarios`
---
-ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`nickname`);
-
---
--- Indices de la tabla `ventas`
---
-ALTER TABLE `ventas`
-  ADD PRIMARY KEY (`id_venta`,`num_mesa`),
-  ADD KEY `nickname_usuario` (`nickname_usuario`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `productos`
---
-ALTER TABLE `productos`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de la tabla `ventas`
---
-ALTER TABLE `ventas`
-  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT;
+  `num_mesa` int(11) NOT NULL,
+  PRIMARY KEY (`id_venta`,`num_mesa`),
+  KEY `nickname_usuario` (`nickname_usuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Restricciones para tablas volcadas

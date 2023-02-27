@@ -17,7 +17,7 @@ public class Venta {
     private int num_mesa;
     private Usuario usuario;
     private LocalDateTime fecha_venta;
-    private ArrayList<Producto> productos;
+    private ArrayList<Pair> productos;
 
     public Venta() {
         this.id = -1;
@@ -27,7 +27,7 @@ public class Venta {
         this.productos = new ArrayList();
     }
     
-    public Venta(int id,int num_mesa, Usuario usuario, LocalDateTime fecha_venta, ArrayList<Producto> productos) {
+    public Venta(int id,int num_mesa, Usuario usuario, LocalDateTime fecha_venta, ArrayList<Pair> productos) {
         this.id = id;
         this.num_mesa = num_mesa;
         this.usuario = usuario;
@@ -67,16 +67,54 @@ public class Venta {
         this.fecha_venta = fecha_venta;
     }
 
-    public ArrayList<Producto> getProductos() {
+    public ArrayList<Pair> getProductos() {
         return productos;
     }
 
-    public void setProductos(ArrayList<Producto> productos) {
+    public void setProductos(ArrayList<Pair> productos) {
         this.productos = productos;
     }
 
     public void addProducto(Producto producto){
-        this.productos.add(producto);
+        //si la lista no esta vacia
+        if (!this.productos.isEmpty()) {
+            //Recorremos la lista de productos
+            for (Pair producto1 : productos) {
+                if (producto1.getProducto().equals(producto)) {
+                    //Si el producto que queremos añadir esta dentro de la lista
+                    //  solo incrementamos su cantidad
+                    producto1.setCantidad(producto1.getCantidad()+1);
+                }else{
+                    //Si el producto que queremos añadir no esta dentro de la lista
+                    //  creamos el objeto Pair y lo insertamos
+                    this.productos.add(new Pair(producto,1));
+                }
+            }
+        }else{
+           //Si esta vacia directamente creamos el objeto Pair y lo insertamos
+           this.productos.add(new Pair(producto,1));
+        }  
+    }
+    
+    public void addPairProducto(Pair producto){
+        //si la lista no esta vacia
+        if (!this.productos.isEmpty()) {
+            //Recorremos la lista de productos
+            for (Pair producto1 : productos) {
+                if (producto1.getProducto().equals(producto)) {
+                    //Si el producto que queremos añadir esta dentro de la lista
+                    //  solo incrementamos su cantidad
+                    producto1.setCantidad(producto1.getCantidad()+1);
+                }else{
+                    //Si el producto que queremos añadir no esta dentro de la lista
+                    //  creamos el objeto Pair y lo insertamos
+                    this.productos.add(producto);
+                }
+            }
+        }else{
+           //Si esta vacia directamente creamos el objeto Pair y lo insertamos
+           this.productos.add(producto);
+        }  
     }
     @Override
     public int hashCode() {

@@ -22,6 +22,9 @@ public class Login extends javax.swing.JFrame {
     DefaultComboBoxModel modeloComboUsuarios;
     //Listado de empleados
     Usuarios listaUsuarios;
+    
+    public static Usuario USUARIOLOGIN;
+    
     /**
      * Creates new form Login
      */
@@ -297,8 +300,8 @@ public class Login extends javax.swing.JFrame {
             Usuario usuario = listaUsuarios.getUsuario(cbUsuarios.getSelectedIndex());
             // Comprobamos que la contrasena es correcta
             if (conexion.compruebaPassword(usuario.getNickname(), Integer.parseInt(tfPassword.getText()))) {
-                //Contrasena correcta siguiente pantalla
-                
+                //Contrasena correcta se guarda el usuario logeado y muestra la siguiente pantalla
+                this.USUARIOLOGIN = usuario;
                 JOptionPane.showMessageDialog(null, "Contrasena correcta", "Exito", JOptionPane.INFORMATION_MESSAGE);
                 new tpvGUI().setVisible(true);
             } else {
