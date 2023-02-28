@@ -65,8 +65,10 @@ public class tpvGUI extends javax.swing.JFrame {
              buttons[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("nombre boton: " + );
+                    System.out.println("Se hizo clic en el botón " + e.getID());
                 }
+
+                
             });
         }
         
@@ -590,6 +592,10 @@ public class tpvGUI extends javax.swing.JFrame {
             //Añadimos cada porducto al jlist
             this.modeloJListVenta.addElement(this.venta.getProductos().get(i).toString());
         }
+    }
+    
+    private void añadirProducto(String nombrebtn) {
+        
     }
     
     private void cargarLabelsUsuario(Usuario usuario){
