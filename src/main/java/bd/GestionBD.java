@@ -85,6 +85,23 @@ public class GestionBD {
         }
         return salida;
     }
+    
+    public Connection getConexion(){
+        if (conexion != null) {
+            try {
+                //Driver que vamos a usar
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                //Inicializar la conexion
+                return conexion = DriverManager.getConnection("jdbc:mysql://" + HOST
+                        + "/" + BD, USUARIO, PASSWORD);
+            } catch (ClassNotFoundException ex) {
+                System.err.println("Error al cargar el driver MySQL " + ex.getMessage());
+            } catch (SQLException ex) {
+                System.err.println("Error SQL: " + ex.getMessage());
+            }
+        }
+        return null;
+    }
 
 //PRODUCTOS············································································
     //INSERTAR PRODUCTO

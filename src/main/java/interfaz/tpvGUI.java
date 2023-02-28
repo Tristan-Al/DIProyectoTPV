@@ -93,6 +93,14 @@ public class tpvGUI extends javax.swing.JFrame {
         }
         //System.out.println("Venta: " + this.venta.toString());
     }
+    
+    public void limpiarCampos(){
+        ArrayList<Pair> productos = new ArrayList();
+        venta.setProductos(productos);
+        this.txtNumMesaVenta.setText("");
+        actualizaProductosVenta();
+        txtTotalVenta.setText("");
+    }
     /**
      * 
      * This method is called from within the constructor to initialize the form.
@@ -457,10 +465,7 @@ public class tpvGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTotalVentaActionPerformed
 
     private void btnAnularpedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnularpedidoActionPerformed
-        ArrayList<Pair> productos = new ArrayList();
-        venta.setProductos(productos);
-        this.txtNumMesaVenta.setText("");
-        actualizaProductosVenta();
+        limpiarCampos();
     }//GEN-LAST:event_btnAnularpedidoActionPerformed
 
     private void bt9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt9ActionPerformed
@@ -548,6 +553,8 @@ public class tpvGUI extends javax.swing.JFrame {
             for (int i = 0; i < venta.getProductos().size(); i++) {
                 conexion.actualizaStock(venta.getProductos().get(i).getProducto(), venta.getProductos().get(i).getCantidad());  
             }
+            JOptionPane.showMessageDialog(null, "Venta guardada", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            limpiarCampos();
         }else{
             JOptionPane.showMessageDialog(null, "Faltan campos obligatorios.", "Error", JOptionPane.INFORMATION_MESSAGE);
         }

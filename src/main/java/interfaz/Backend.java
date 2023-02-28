@@ -5,10 +5,18 @@
 package interfaz;
 
 import bd.GestionBD;
+import java.awt.Dimension;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import models.Producto;
 import models.Productos;
@@ -16,6 +24,12 @@ import models.Usuario;
 import models.Usuarios;
 import models.Venta;
 import models.Ventas;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.swing.JRViewer;
 
 /**
  *
@@ -118,6 +132,7 @@ public class Backend extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jListVentas = new javax.swing.JList<>();
         btnBorrarVenta = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         PanelListadoUsuarios.setBorder(javax.swing.BorderFactory.createTitledBorder("Listado:"));
 
@@ -496,6 +511,13 @@ public class Backend extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Mostrar informe");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout TabVentasLayout = new javax.swing.GroupLayout(TabVentas);
         TabVentas.setLayout(TabVentasLayout);
         TabVentasLayout.setHorizontalGroup(
@@ -505,7 +527,9 @@ public class Backend extends javax.swing.JFrame {
                 .addComponent(PanelListadoUsuarios1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(TabVentasLayout.createSequentialGroup()
-                .addGap(313, 313, 313)
+                .addGap(208, 208, 208)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnBorrarVenta)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -515,7 +539,9 @@ public class Backend extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(PanelListadoUsuarios1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnBorrarVenta)
+                .addGroup(TabVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBorrarVenta)
+                    .addComponent(jButton1))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
 
@@ -651,6 +677,37 @@ public class Backend extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEditarFotoActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            //Ruta del informe
+            String reportName = "reports\\ListadoVenta.jrxml";
+            
+            JasperReport jrcm = JasperCompileManager.compileReport(reportName);
+            
+            //Creamos un hashmap para pasar los parametros del informe
+            HashMap<String, Object> parametros = new HashMap();
+            
+            //Rellenamos los parametros para pasarlos al informe
+            parametros.put("SubReport_Usuario", "reports\\");
+            parametros.put("SubReport_DetalleVenta", "reports\\");
+            parametros.put("SubReport_Productos", "reports\\");
+            
+            //Rellenar lso parametros 
+            JasperPrint jp = JasperFillManager.fillReport(jrcm, parametros, conexion.getConexion());
+            JRViewer visor = new JRViewer(jp);
+            
+            JFrame jf = new JFrame();
+            jf.getContentPane().add(visor);
+            jf.validate();
+            jf.setSize(new Dimension(900,1000));
+            jf.setLocation(300,100);
+            jf.setVisible(true);
+            
+        } catch (JRException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -708,6 +765,7 @@ public class Backend extends javax.swing.JFrame {
     private javax.swing.JButton btnNuevoProducto;
     private javax.swing.JButton btnNuevoUsuario;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

@@ -299,7 +299,6 @@ public class Login extends javax.swing.JFrame {
             // Comprobamos que la contrasena es correcta
             if (conexion.compruebaPassword(usuario.getNickname(), Integer.parseInt(tfPassword.getText()))) {
                 //Contrasena correcta se guarda el usuario logeado y muestra la siguiente pantalla
-                JOptionPane.showMessageDialog(null, "Contrasena correcta", "Exito", JOptionPane.INFORMATION_MESSAGE);
                 new tpvGUI(usuario).setVisible(true);
             } else {
                 // Informamos del error
