@@ -25,13 +25,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import modelos.Pair;
-import modelos.Producto;
-import modelos.Productos;
-import modelos.Usuario;
-import modelos.Usuarios;
-import modelos.Venta;
-import modelos.Ventas;
+import models.Pair;
+import models.Producto;
+import models.Productos;
+import models.Usuario;
+import models.Usuarios;
+import models.Venta;
+import models.Ventas;
 
 public class GestionBD {
 
@@ -911,7 +911,7 @@ public class GestionBD {
             fis = new FileInputStream(f);
 
             pstmt = conexion.prepareStatement(sql);
-            pstmt.setBinaryStream(1, fis, (int) f.length());
+            pstmt.setBinaryStream(1, resizeFromFile(f,100,100), (int) f.length());
             pstmt.setInt(2, idProducto);
             pstmt.executeUpdate();
 
@@ -933,9 +933,8 @@ public class GestionBD {
             conectar();
 
             sql = "SELECT `imagen` FROM `productos` WHERE id_producto = " + idProducto;
-            System.out.println(sql  );
             pstmt = conexion.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery(sql);
             while (rs.next()) {
                 Blob blob = rs.getBlob("imagen");
                 blodlength = (int) blob.length();
@@ -1011,6 +1010,5 @@ public class GestionBD {
         }
         return salida;
     }
-    
     
 }

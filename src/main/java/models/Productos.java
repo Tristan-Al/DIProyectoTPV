@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package modelos;
+package models;
 
 import java.util.ArrayList;
 
@@ -10,22 +10,22 @@ import java.util.ArrayList;
  *
  * @author rbare
  */
-public class Ventas {
-    private ArrayList<Venta> lista;
+public class Productos {
+    private ArrayList<Producto> lista;
     
     //Constructores
-    public Ventas(){
+    public Productos(){
         lista = new ArrayList();
     }
     
-    //Borrar venta de la lista
-    public boolean removeVenta(Venta venta){
-        return lista.remove(venta);
+    //Borrar un producto de la lista
+    public boolean removeProducto(Producto producto){
+        return lista.remove(producto);
     }
     
-    //Anadir venta a la lista
-    public boolean addVenta(Venta venta){
-        return lista.add(venta);
+    //Anadir un producto a la lista
+    public boolean addProducto(Producto producto){
+        return lista.add(producto);
     }
     
     //Recoger el tamaño de la lista
@@ -33,8 +33,8 @@ public class Ventas {
         return lista.size();
     }
     
-    //Recoger una venta de la lista
-    public Venta getVenta(int posicion){
+    //Recoger un producto de la lista
+    public Producto getProducto(int posicion){
         return lista.get(posicion);
     }
 }

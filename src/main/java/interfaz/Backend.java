@@ -10,12 +10,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import modelos.Producto;
-import modelos.Productos;
-import modelos.Usuario;
-import modelos.Usuarios;
-import modelos.Venta;
-import modelos.Ventas;
+import models.Producto;
+import models.Productos;
+import models.Usuario;
+import models.Usuarios;
+import models.Venta;
+import models.Ventas;
 
 /**
  *
@@ -33,6 +33,7 @@ public class Backend extends javax.swing.JFrame {
     DefaultListModel modeloJListUsuarios;
     DefaultListModel modeloJListProductos;
     DefaultListModel modeloJListVentas;
+    File fselect;
         
     
     /**
@@ -51,6 +52,7 @@ public class Backend extends javax.swing.JFrame {
         
         //Instanciamos la conexion
         conexion = new GestionBD("localhost", "root", "", "gestortpv");
+        //conexion = new GestionBD("localhost", "root", "dam_21017245_sge", "gestortpv");
         listadoProductos = conexion.listarProductos();
         listadoUsuarios = conexion.listarUsuarios();
         listadoVentas = conexion.listarVentas();
@@ -110,9 +112,7 @@ public class Backend extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jSpinnerStockProducto = new javax.swing.JSpinner();
         jSpinnerPrecioProducto = new javax.swing.JSpinner();
-        PanelGuardar = new javax.swing.JPanel();
-        txtRutaFichero = new javax.swing.JTextField();
-        AbrirRuta = new javax.swing.JButton();
+        btnEditarFoto = new javax.swing.JButton();
         TabVentas = new javax.swing.JPanel();
         PanelListadoUsuarios1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -376,42 +376,26 @@ public class Backend extends javax.swing.JFrame {
         jSpinnerPrecioProducto.setModel(new javax.swing.SpinnerNumberModel(0.0d, 0.0d, null, 1.0d));
         jSpinnerPrecioProducto.setToolTipText("");
 
-        PanelGuardar.setBorder(javax.swing.BorderFactory.createTitledBorder("Subir imagen"));
-
-        txtRutaFichero.setBorder(javax.swing.BorderFactory.createTitledBorder("Ruta:"));
-
-        AbrirRuta.setText("Abrir");
-        AbrirRuta.addActionListener(new java.awt.event.ActionListener() {
+        btnEditarFoto.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        btnEditarFoto.setText("Editar Foto");
+        btnEditarFoto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AbrirRutaActionPerformed(evt);
+                btnEditarFotoActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout PanelGuardarLayout = new javax.swing.GroupLayout(PanelGuardar);
-        PanelGuardar.setLayout(PanelGuardarLayout);
-        PanelGuardarLayout.setHorizontalGroup(
-            PanelGuardarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelGuardarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtRutaFichero, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(AbrirRuta)
-                .addContainerGap(14, Short.MAX_VALUE))
-        );
-        PanelGuardarLayout.setVerticalGroup(
-            PanelGuardarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelGuardarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(PanelGuardarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtRutaFichero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AbrirRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
 
         javax.swing.GroupLayout PanelDetalleProductosLayout = new javax.swing.GroupLayout(PanelDetalleProductos);
         PanelDetalleProductos.setLayout(PanelDetalleProductosLayout);
         PanelDetalleProductosLayout.setHorizontalGroup(
             PanelDetalleProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelDetalleProductosLayout.createSequentialGroup()
+                .addContainerGap(192, Short.MAX_VALUE)
+                .addComponent(btnBorrarProducto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnNuevoProducto)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnGuardarProducto)
+                .addGap(41, 41, 41))
             .addGroup(PanelDetalleProductosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PanelDetalleProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -420,20 +404,12 @@ public class Backend extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PanelGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(PanelDetalleProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jSpinnerPrecioProducto, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(txtnombreProducto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE))
-                    .addComponent(jSpinnerStockProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSpinnerStockProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEditarFoto))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelDetalleProductosLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnBorrarProducto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnNuevoProducto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnGuardarProducto)
-                .addGap(41, 41, 41))
         );
         PanelDetalleProductosLayout.setVerticalGroup(
             PanelDetalleProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -454,8 +430,8 @@ public class Backend extends javax.swing.JFrame {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSpinnerStockProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(PanelGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addComponent(btnEditarFoto)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(PanelDetalleProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardarProducto)
@@ -589,8 +565,6 @@ public class Backend extends javax.swing.JFrame {
         producto.setPrecio(Double.parseDouble(this.jSpinnerPrecioProducto.getValue().toString()));
         producto.setStock(Integer.parseInt(this.jSpinnerStockProducto.getValue().toString()));
         guardarProducto(producto);
-        File fselect = new File(this.txtRutaFichero.getText());
-        conexion.setFoto(Integer.parseInt(this.txtidProducto.getText()), fselect);
     }//GEN-LAST:event_btnGuardarProductoActionPerformed
 
     private void btnBorrarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarProductoActionPerformed
@@ -637,19 +611,6 @@ public class Backend extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtnombreProductoActionPerformed
 
-    private void AbrirRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirRutaActionPerformed
-        File fselect = new File(this.txtRutaFichero.getText());
-        JFileChooser chooser = new JFileChooser();
-        // optionally set chooser options ...
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            fselect = chooser.getSelectedFile();
-            // read  and/or display the file somehow. ....
-            this.txtRutaFichero.setText(fselect.getPath());
-        } else {
-            // user changed their mind
-        }
-    }//GEN-LAST:event_AbrirRutaActionPerformed
-
     private void jListVentasValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListVentasValueChanged
         
     }//GEN-LAST:event_jListVentasValueChanged
@@ -683,6 +644,12 @@ public class Backend extends javax.swing.JFrame {
     private void jRadioButtonGerenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonGerenteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jRadioButtonGerenteActionPerformed
+
+    private void btnEditarFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarFotoActionPerformed
+        if (this.jListProductos.getSelectedIndex() > -1) {
+            new InsertarImgProducto(Integer.parseInt(this.txtidProducto.getText())).setVisible(true);
+        }
+    }//GEN-LAST:event_btnEditarFotoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -723,10 +690,8 @@ public class Backend extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AbrirRuta;
     private javax.swing.JPanel PanelDetalleProductos;
     private javax.swing.JPanel PanelDetalleUsuario;
-    private javax.swing.JPanel PanelGuardar;
     private javax.swing.JPanel PanelListadoProductos;
     private javax.swing.JPanel PanelListadoUsuarios;
     private javax.swing.JPanel PanelListadoUsuarios1;
@@ -736,6 +701,7 @@ public class Backend extends javax.swing.JFrame {
     private javax.swing.JButton btnBorrarProducto;
     private javax.swing.JButton btnBorrarUsuario;
     private javax.swing.JButton btnBorrarVenta;
+    private javax.swing.JButton btnEditarFoto;
     private javax.swing.JButton btnGuardarProducto;
     private javax.swing.JButton btnGuardarUsuario;
     private javax.swing.JButton btnInsertarUsuario;
@@ -762,7 +728,6 @@ public class Backend extends javax.swing.JFrame {
     private javax.swing.JSpinner jSpinnerPrecioProducto;
     private javax.swing.JSpinner jSpinnerStockProducto;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField txtRutaFichero;
     private javax.swing.JTextField txtapellidosUsuario;
     private javax.swing.JTextField txtidProducto;
     private javax.swing.JTextField txtnickUsuario;
@@ -779,9 +744,7 @@ public class Backend extends javax.swing.JFrame {
         //Actualizar el listado
         this.listadoProductos = conexion.listarProductos();
         //Debemos coger el listado de productos y cargarlo en el modeloJListProductos
-        System.out.println("Tamaño listado" + this.listadoProductos.size());
         for (int i = 0; i < this.listadoProductos.size(); i++) {
-            System.out.println("Posicion producto en el listado" + i);
             //Añadimos cada porducto al jlist
             this.modeloJListProductos.addElement(this.listadoProductos.getProducto(i).getNombre());
             System.out.println(this.listadoProductos.getProducto(i).getNombre());
@@ -790,14 +753,15 @@ public class Backend extends javax.swing.JFrame {
     }
     
     private void mostrarProducto(int i){
-        Producto productoSel = new Producto();
-        productoSel = this.listadoProductos.getProducto(i);
-        
-        this.txtidProducto.setText(String.valueOf(productoSel.getId_producto()));
-        this.txtnombreProducto.setText(productoSel.getNombre());
-        this.jSpinnerPrecioProducto.setValue(productoSel.getPrecio());
-        this.jSpinnerStockProducto.setValue(productoSel.getStock());
-        
+        if (i > -1) {
+            Producto productoSel = new Producto();
+            productoSel = this.listadoProductos.getProducto(i);
+
+            this.txtidProducto.setText(String.valueOf(productoSel.getId_producto()));
+            this.txtnombreProducto.setText(productoSel.getNombre());
+            this.jSpinnerPrecioProducto.setValue(productoSel.getPrecio());
+            this.jSpinnerStockProducto.setValue(productoSel.getStock());
+        }
     }
 
     //Borra el contenido de los campos del detalle de Productos

@@ -7,8 +7,8 @@ package interfaz;
 import bd.GestionBD;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import modelos.Usuario;
-import modelos.Usuarios;
+import models.Usuario;
+import models.Usuarios;
 
 /**
  *
@@ -22,8 +22,6 @@ public class Login extends javax.swing.JFrame {
     DefaultComboBoxModel modeloComboUsuarios;
     //Listado de empleados
     Usuarios listaUsuarios;
-    
-    public static Usuario USUARIOLOGIN;
     
     /**
      * Creates new form Login
@@ -301,9 +299,8 @@ public class Login extends javax.swing.JFrame {
             // Comprobamos que la contrasena es correcta
             if (conexion.compruebaPassword(usuario.getNickname(), Integer.parseInt(tfPassword.getText()))) {
                 //Contrasena correcta se guarda el usuario logeado y muestra la siguiente pantalla
-                this.USUARIOLOGIN = usuario;
                 JOptionPane.showMessageDialog(null, "Contrasena correcta", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                new tpvGUI().setVisible(true);
+                new tpvGUI(usuario).setVisible(true);
             } else {
                 // Informamos del error
                 JOptionPane.showMessageDialog(null, "Contraseña incorrecta", "Error", JOptionPane.ERROR_MESSAGE);

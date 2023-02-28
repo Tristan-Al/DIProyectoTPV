@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
-import modelos.Pair;
-import modelos.Producto;
-import modelos.Usuario;
-import modelos.Venta;
-import modelos.Ventas;
+import models.Pair;
+import models.Producto;
+import models.Usuario;
+import models.Venta;
+import models.Ventas;
 
 public class Pruebas {
 

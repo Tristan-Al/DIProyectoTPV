@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package modelos;
+package models;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -116,6 +116,11 @@ public class Venta {
            this.productos.add(producto);
         }  
     }
+    
+    public void borrarProducto(int posicion){
+        productos.remove(posicion);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 3;
