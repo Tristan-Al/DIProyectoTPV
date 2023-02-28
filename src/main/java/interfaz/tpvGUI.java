@@ -59,7 +59,6 @@ public class tpvGUI extends javax.swing.JFrame {
         initComponents();
         
         buttons = new JButton[this.listadoProductos.size()];
-        this.PanelProductos.setPreferredSize(new Dimension(639, 679));
         for (int i = 0; i < listadoProductos.size(); i++) {
             buttons[i] = new JButton();
             buttons[i].setIcon(conexion.getBlobBD(listadoProductos.getProducto(i).getId_producto()));
