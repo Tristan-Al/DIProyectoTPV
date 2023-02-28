@@ -26,10 +26,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="bottomPanel" min="-2" pref="1083" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="71" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="bottomPanel" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" attributes="0">
@@ -49,7 +46,7 @@
                           <Component id="btnCobrar" alignment="1" min="-2" pref="115" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                      <Component id="PanelProductos" max="32767" attributes="0"/>
+                      <Component id="PanelProductos" pref="615" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -293,6 +290,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Cobrar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCobrarActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="bottomPanel">
       <Properties>
@@ -336,6 +336,8 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelCargoEmpleado">
         </Component>
+        <Component class="javax.swing.JSeparator" name="jSeparator2">
+        </Component>
         <Component class="javax.swing.JButton" name="btnSalir">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -346,6 +348,8 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSalirActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JSeparator" name="jSeparator1">
         </Component>
       </SubComponents>
     </Container>

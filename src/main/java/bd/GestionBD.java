@@ -849,6 +849,36 @@ public class GestionBD {
 
         return false;
     }
+    
+    public int getStock(Producto producto) {
+        int stock = 0;
+        try {
+            //Nos conectamos a la BD
+            conectar();
+            //Creamos la sentencia
+            Statement stmt = conexion.createStatement();
+            //Preparamos la sentencia SQL
+            String sentencia = String.format(
+                    "SELECT `stock` FROM `productos` WHERE `id_producto` = %s",
+                    producto.getId_producto());
+            //Mostramos la consulta por consola
+            System.out.println("Consulta SQL: " + sentencia);
+            //Ejecutamos la consulta
+            ResultSet rs = stmt.executeQuery(sentencia);
+            while (rs.next()) {
+                stock = rs.getInt(1);
+            }
+            //Cierro el resultSet
+            rs.close();
+            //Cerrar la sentencia
+            stmt.close();
+            //Desconectar
+            desconectar();
+        } catch (SQLException ex) {
+            System.err.println("Error al encontrar el producto. " + producto.getNombre() + ". " + ex.getMessage());
+        }
+        return stock;
+    }
 
     /**
      * Comprueba si hay stock suficiente y en caso de que hubiera resta la

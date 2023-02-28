@@ -91,5 +91,8 @@ public class Pair {
         return sb.toString();
     }
     
+    public double totalProducto(Producto producto){
+        return producto.getPrecio() * cantidad;
+    }
     
 }

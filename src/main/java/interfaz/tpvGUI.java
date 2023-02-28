@@ -9,11 +9,13 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import models.Pair;
 import models.Producto;
 import models.Productos;
@@ -74,8 +76,21 @@ public class tpvGUI extends javax.swing.JFrame {
     
     public void anadirProductoVenta(String nombreProducto){
         Producto producto = conexion.buscarProductoNom(nombreProducto);
-        venta.addProducto(producto);
-        actualizaProductosVenta();
+        if (venta.getProductos().indexOf(new Pair(producto, 1)) != -1) {
+            if (conexion.getStock(producto) > venta.getProductos().get(venta.getProductos().indexOf(new Pair(producto, 1))).getCantidad() ) {
+                venta.addProducto(producto);
+                actualizaProductosVenta();
+            }else{
+                JOptionPane.showMessageDialog(null, "No hay stock de ese producto.", "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }else{
+            if (conexion.getStock(producto) > 0) {
+                venta.addProducto(producto);
+                actualizaProductosVenta();
+            }else{
+                JOptionPane.showMessageDialog(null, "No hay stock de ese producto.", "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
         //System.out.println("Venta: " + this.venta.toString());
     }
     /**
@@ -109,7 +124,9 @@ public class tpvGUI extends javax.swing.JFrame {
         jLabelNombreEmpleado = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabelCargoEmpleado = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
         btnSalir = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
         jPanel4 = new javax.swing.JPanel();
         bt1 = new javax.swing.JButton();
         bt2 = new javax.swing.JButton();
@@ -234,6 +251,11 @@ public class tpvGUI extends javax.swing.JFrame {
 
         btnCobrar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnCobrar.setText("Cobrar");
+        btnCobrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCobrarActionPerformed(evt);
+            }
+        });
 
         bottomPanel.setBackground(new java.awt.Color(102, 204, 255));
         bottomPanel.setForeground(new java.awt.Color(0, 153, 204));
@@ -251,6 +273,7 @@ public class tpvGUI extends javax.swing.JFrame {
         jLabel9.setText("    Cargo:");
         bottomPanel.add(jLabel9);
         bottomPanel.add(jLabelCargoEmpleado);
+        bottomPanel.add(jSeparator2);
 
         btnSalir.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnSalir.setText("Salir");
@@ -260,6 +283,7 @@ public class tpvGUI extends javax.swing.JFrame {
             }
         });
         bottomPanel.add(btnSalir);
+        bottomPanel.add(jSeparator1);
 
         jPanel4.setLayout(new java.awt.GridLayout(4, 3));
 
@@ -370,9 +394,7 @@ public class tpvGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(bottomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1083, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 71, Short.MAX_VALUE))
+                    .addComponent(bottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -389,7 +411,7 @@ public class tpvGUI extends javax.swing.JFrame {
                             .addComponent(btnBotonZonaAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnCobrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(40, 40, 40)
-                        .addComponent(PanelProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(PanelProductos, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -426,9 +448,12 @@ public class tpvGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     private void btnBotonZonaAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBotonZonaAdminActionPerformed
-        new Backend().setVisible(true);
+        if (venta.getUsuario().getRol() == 0) {
+            new Backend().setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(null, "No tienes permiso para entrar aqui.", "Error", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btnBotonZonaAdminActionPerformed
 
     private void txtTotalVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalVentaActionPerformed
@@ -515,6 +540,23 @@ public class tpvGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBorrarProductoActionPerformed
 
+    private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
+        if (!this.txtNumMesaVenta.getText().isBlank() && !this.modeloJListVenta.isEmpty()) {
+            venta.setNum_mesa(Integer.parseInt(this.txtNumMesaVenta.getText()));
+            double sumaTotal = 0.0;
+            for (int i = 0; i < venta.getProductos().size(); i++) {
+                sumaTotal = (venta.getProductos().get(i).getCantidad() * venta.getProductos().get(i).getProducto().getPrecio()) + sumaTotal;
+            }
+            this.txtTotalVenta.setText(String.valueOf(sumaTotal));
+            conexion.insertarVenta(venta);
+            for (int i = 0; i < venta.getProductos().size(); i++) {
+                conexion.actualizaStock(venta.getProductos().get(i).getProducto(), venta.getProductos().get(i).getCantidad());  
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Faltan campos obligatorios.", "Error", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnCobrarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -585,6 +627,8 @@ public class tpvGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField txtNumMesaVenta;
     private javax.swing.JTextField txtTotalVenta;
     // End of variables declaration//GEN-END:variables
