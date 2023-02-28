@@ -61,18 +61,23 @@ public class tpvGUI extends javax.swing.JFrame {
         for (int i = 0; i < listadoProductos.size(); i++) {
             buttons[i] = new JButton();
             buttons[i].setIcon(conexion.getBlobBD(listadoProductos.getProducto(i).getId_producto()));
+            buttons[i].setName(listadoProductos.getProducto(i).getNombre());
             this.PanelProductos.add(buttons[i]);
-             buttons[i].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    
-                }
-            });
+             buttons[i].addActionListener((ActionEvent e) -> {
+                    JButton boton = (JButton) e.getSource();
+                    anadirProductoVenta(boton.getName());
+                });
         }
         
         cargarLabelsUsuario(usuario);
     }
     
+    public void anadirProductoVenta(String nombreProducto){
+        Producto producto = conexion.buscarProductoNom(nombreProducto);
+        venta.addProducto(producto);
+        actualizaProductosVenta();
+        //System.out.println("Venta: " + this.venta.toString());
+    }
     /**
      * 
      * This method is called from within the constructor to initialize the form.
@@ -147,6 +152,8 @@ public class tpvGUI extends javax.swing.JFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Total");
 
+        jListProdructosVenta.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jListProdructosVenta.setModel(this.modeloJListVenta);
         jScrollPane1.setViewportView(jListProdructosVenta);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -588,7 +595,8 @@ public class tpvGUI extends javax.swing.JFrame {
         //Debemos coger el listado de productos y cargarlo en el modeloJListProductos
         for (int i = 0; i < this.venta.getProductos().size(); i++) {
             //Añadimos cada porducto al jlist
-            this.modeloJListVenta.addElement(this.venta.getProductos().get(i).toString());
+            this.modeloJListVenta.addElement(this.venta.getProductos().get(i));
+            System.out.println("Productos de la venta actual: "+this.venta.getProductos().get(i).toString());
         }
     }
     

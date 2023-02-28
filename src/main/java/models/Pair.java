@@ -84,11 +84,12 @@ public class Pair {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Pair{");
-        sb.append("producto=").append(producto);
-        sb.append(", cantidad=").append(cantidad);
-        sb.append('}');
+        sb.append(producto.getNombre());
+        sb.append("             ").append(cantidad);
+        sb.append("             ").append(producto.getPrecio());
+        sb.append("             ").append(producto.getPrecio() * cantidad);
         return sb.toString();
     }
+    
     
 }
